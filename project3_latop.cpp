@@ -1,5 +1,5 @@
 // to compile this program rum g++  project_2.cpp -01 -larmadillo llapack -lblas  -Wall 
-// the -Wall attribute is used to show all the errors you may possible get in your score code
+// the -Wall attribute can be used to show all the is used to show all the errors you may possible get in your score code while runnig
 #include <armadillo> // the Armadillo linear algebra package of c++
 #include <iostream>
 #include <fstream>
@@ -10,6 +10,8 @@
 using namespace std;
 int main()
 {
- this is the key thing	checking for how the tracking within a branch works
-another change i  am adding this line using the desktop
+//building the Huckel matrix using the Armadillo Package
+	arma::cx_mat HB= arma::zeros<arma::cx_mat>(4,4);
+	complex <double> I(0.0,1.0);
+	HB(1,1)=exp(-It);
 }	
