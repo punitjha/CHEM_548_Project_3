@@ -11,13 +11,13 @@
 using namespace std;
 int main()
 {
+//****************************************************************************************************************
 // this part of the program construts a generalized Hamiltonian of an molecule specified in the file name seciton
-//building the Huckel matrix using the Armadillo Package
+//building the Huckel matrix using the Armadillo Package.
+//****************************************************************************************************************
 	string filename;
 	int atoms;
 	arma::mat connect;
-//	cout<<"Please enter the name of the molecule file"<<filename<<endl;
-//	cin>>filename;
 	ifstream myfile("anthracene"); //the name of the molcule is specified here as the connectivity file name
 	if (myfile.is_open())
 	{
@@ -36,14 +36,12 @@ int main()
 			while(ss >> num)
 			{
 				connect(row,col)=num;
-//				cout<<connect(row,col)<<endl;
 				col++;
 			}
 			row++;
 		}
 	}
 	myfile.close();
-//	connect.print();
 	arma::mat Huckel= arma::zeros(atoms,atoms);
 	arma::mat Huckel2= arma::zeros(atoms,atoms); 
 	for (int i=0; i<atoms; i++)
@@ -63,9 +61,7 @@ int main()
 			Huckel2(n1,n3)=2.94;
 		}
 	}	
-//	Huckel.print();
 	Huckel2.diag().fill(5.94);
-//	Huckel2.print();
 	arma::vec eigenvalues;
 	arma::mat eigenvectors;
 	arma::eig_sym(eigenvalues, eigenvectors, Huckel);
@@ -79,8 +75,37 @@ int main()
 	complex <double> I(0.0,1.0);
 	arma::cx_mat HB= arma::zeros<arma::cx_mat>(4,4);
 
-// this part of the program pertians to the 1D Huckel band structure and applies it to the pi band of polyacetelyle and single walled carbon nanotube
-	
+
+
+
+//***************************************************************************************************************************************************
+//(2-1) This part of the program is on the 1D Huckel band structure and applies it to the pi band of polyacetelyle and single walled carbon nanotube
+//***************************************************************************************************************************************************
+
+	arma::cx_mat dHuckel(2,2);
+	arma::cx_vec eigenvalues22;
+	arma::cx_mat eigenvectors22;
+	for (double k=-0.5;k<0.5;k=k+0.01)
+	{
+		dHuckel(0,0)=0;
+		dHuckel(0,1)=-1.1-0.9*exp(-I*k);
+		dHuckel(1,0)=-1.1-0.9*exp(I*k);
+		dHuckel(1,1)=0;
+		arma::eig_gen(eigenvalues22, eigenvectors22, dHuckel);
+		eigenvalues22.print();
+	}
+
+
+
+
+//******************************************************************************************************************************************************
+//(2-2) This part of the program is on the where we have the t
+//******************************************************************************************************************************************************
+
+
+
+
+
 
 
 
