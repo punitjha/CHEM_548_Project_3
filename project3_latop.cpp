@@ -11,13 +11,14 @@
 using namespace std;
 int main()
 {
+// this part of the program construts a generalized Hamiltonian of an molecule specified in the file name seciton
 //building the Huckel matrix using the Armadillo Package
 	string filename;
 	int atoms;
 	arma::mat connect;
 //	cout<<"Please enter the name of the molecule file"<<filename<<endl;
 //	cin>>filename;
-	ifstream myfile("benzene");
+	ifstream myfile("anthracene"); //the name of the molcule is specified here as the connectivity file name
 	if (myfile.is_open())
 	{
 		string str1;
@@ -35,31 +36,59 @@ int main()
 			while(ss >> num)
 			{
 				connect(row,col)=num;
-				cout<<connect(row,col)<<endl;
+//				cout<<connect(row,col)<<endl;
 				col++;
 			}
 			row++;
 		}
 	}
 	myfile.close();
-	connect.print();
+//	connect.print();
 	arma::mat Huckel= arma::zeros(atoms,atoms);
+	arma::mat Huckel2= arma::zeros(atoms,atoms); 
 	for (int i=0; i<atoms; i++)
         {
-		for (int j=0;j<3;j++)
+		int n1=connect(i,0)-1;
+		int n2=connect(i,1)-1;
+		int n3=connect(i,2)-1;
+		Huckel(n1,n2)=-1;
+		Huckel(n2,n1)=-1;
+		Huckel2(n1,n2)=2.94;
+		Huckel2(n2,n1)=2.94; 
+		if (n3 > 0)
 		{
-			if (connect(i,j) != 0)
-			{
-				Huckel()
+			Huckel(n1,n3)=-1;
+			Huckel(n3,n1)=-1;
+			Huckel2(n1,n3)=2.94;
+			Huckel2(n1,n3)=2.94;
 		}
 	}	
-
-	Huckel.print();
+//	Huckel.print();
+	Huckel2.diag().fill(5.94);
+//	Huckel2.print();
 	arma::vec eigenvalues;
 	arma::mat eigenvectors;
 	arma::eig_sym(eigenvalues, eigenvectors, Huckel);
+	cout<<"Printing the eigenvalues of the Rounded-off Hamiltonian"<<endl;
 	eigenvalues.print();
+	arma::vec eigenvalues2;
+	arma::mat eigenvectors2;
+	arma::eig_sym(eigenvalues2, eigenvectors2, Huckel2);
+	cout<<"Printing the orbital energies in eV"<<endl;
+	eigenvalues2.print();
 	complex <double> I(0.0,1.0);
 	arma::cx_mat HB= arma::zeros<arma::cx_mat>(4,4);
+
+// this part of the program pertians to the 1D Huckel band structure and applies it to the pi band of polyacetelyle and single walled carbon nanotube
+	
+
+
+
+
+
+
+
+
+
 
 }	
