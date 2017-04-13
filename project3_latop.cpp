@@ -11,10 +11,14 @@
 using namespace std;
 int main()
 {
+
+
+
 //****************************************************************************************************************
 // this part of the program construts a generalized Hamiltonian of an molecule specified in the file name seciton
 //building the Huckel matrix using the Armadillo Package.
 //****************************************************************************************************************
+	const double pi = 3.1415926535897;
 	string filename;
 	int atoms;
 	arma::mat connect;
@@ -85,27 +89,42 @@ int main()
 	arma::cx_mat dHuckel(2,2);
 	arma::cx_vec eigenvalues22;
 	arma::cx_mat eigenvectors22;
-	for (double k=-0.5;k<0.5;k=k+0.01)
+	fstream myfile1("bandgap.txt",fstream::out | fstream::trunc);
+	for (double k=-pi;k<=pi;k=k+0.01)
 	{
 		dHuckel(0,0)=0;
 		dHuckel(0,1)=-1.1-0.9*exp(-I*k);
 		dHuckel(1,0)=-1.1-0.9*exp(I*k);
 		dHuckel(1,1)=0;
 		arma::eig_gen(eigenvalues22, eigenvectors22, dHuckel);
-		eigenvalues22.print();
+		arma::real(eigenvalues22).print();
+		myfile1<<arma::real(eigenvalues22);
+	}
+		
+
+
+
+//******************************************************************************************************************************************************
+//(2-2) This part of the program is on the where we have metallic behaviour of transpolyacetelene due to equidistatn C-C bond
+//******************************************************************************************************************************************************
+
+
+	arma::cx_mat ddHuckel(2,2);
+	arma::cx_vec eigenvalues222;
+	arma::cx_mat eigenvectors222;
+        fstream myfile22("bandgap1.txt", fstream::out|fstream::trunc);	
+	for(double k=-pi; k<=pi; k+=0.01)
+	{
+		ddHuckel(0,0)=0;
+		ddHuckel(0,1)=(-exp(-I*k))-1.0;
+		ddHuckel(1,0)=-1.0-exp(I*k);
+		ddHuckel(1,1)=0;
+		arma::eig_gen(eigenvalues222,eigenvectors222,ddHuckel);
+		myfile22<<arma::real(eigenvalues222);
 	}
 
 
-
-
-//******************************************************************************************************************************************************
-//(2-2) This part of the program is on the where we have the t
-//******************************************************************************************************************************************************
-
-
-
-
-
+//*******************************************************************************************************
 
 
 
