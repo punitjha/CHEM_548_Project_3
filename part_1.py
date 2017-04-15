@@ -11,8 +11,8 @@ eigenvalues1=np.loadtxt('bandgap.txt')
 ee=[]
 ee1=[]
 print(len(eigenvalues1))
-x=np.linspace(-10,10,629)
-for row in range(1258):
+x=np.linspace(-10,10,20)
+for row in range(40):
         if(row%2 == 0):
             ee.append(eigenvalues1[row])
         else:
