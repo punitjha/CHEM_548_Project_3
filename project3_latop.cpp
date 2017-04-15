@@ -1,26 +1,29 @@
 //***************************************************************************************************************************************
+//																        *
 // to compile this program run  g++  -o RunFileName project_2.cpp -01 -larmadillo llapack -lblas  -Wall                                 *
 // the -Wall attribute can be used to show all the is used to show all the errors you may possible get in your score code while runnig  *
+//                															*
 //***************************************************************************************************************************************
 
-#include <armadillo> 						// the Armadillo linear algebra package of c++
+#include <armadillo> 			      			//the Armadillo linear algebra package of c++
 #include <iostream>
 #include <fstream>
 #include <math.h>
 #include <cmath>
 #include <string>
 #include <sstream>
-#include <complex> 						  //for using complex numbers in the program
+#include <complex> 						//for using complex numbers in the program
 using namespace std;
 int main()
 {
 
-
-
 //***************************************************************************************************************************************
+//																	*
 // this part of the program construts a generalized Hamiltonian of an molecule specified in the file name seciton building the Huckel   *
 //matrix using the Armadillo Package.                                                                                                   *
+//																	*
 //***************************************************************************************************************************************
+	
 	const double pi = 3.1415926535897;
 	string filename;
 	int atoms;
@@ -85,7 +88,9 @@ int main()
 
 
 //************************************************************************************************************************************************
+//																		 *
 //(2-1) This part of the program is on the 1D Huckel band structure and applies it to the pi band of polyacetelyle showing its metallic behaviour*
+//																		 *
 //************************************************************************************************************************************************
 
 	arma::cx_mat dHuckel(2,2);				//declaring the Huckel matrix/Hamiltonian
@@ -106,7 +111,9 @@ int main()
 
 
 //***********************************************************************************************************************************************
+//																		*
 //(2-2) This part of the program is on the where we have metallic behaviour of transpolyacetelene due to equidistatn C-C bond                   *
+//																		*
 //***********************************************************************************************************************************************
 
 
@@ -126,9 +133,10 @@ int main()
 
 
 //************************************************************************************************************************************************
+//																		 *
 // this part of the program calculates the band of the 4 walled carbon nanotube                                                                  *
+//																		 *
 //************************************************************************************************************************************************
-
 
 	int carbon=4;								//entering the number of carbon atoms
 	fstream myfile33("carbon.txt", fstream::out|fstream::trunc);
