@@ -3,10 +3,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 eigenvalues1=np.loadtxt('carbon.txt')
-ee=[]
-ee1=[]
-ee2=[]
-ee3=[]
 ee=eigenvalues1[::4]
 ee1=eigenvalues1[1::4]
 ee2=eigenvalues1[2::4]
