@@ -243,8 +243,8 @@ int main()
 //																		    *
 //***************************************************************************************************************************************************
 
-	arma::cx_mat H1(2,2);
-	arma::cx_mat H2(2,2);
+	arma::cx_mat H_k1(2,2); 						//this is the k1 dependent Hamiltonian matrix
+	arma::cx_mat H_k2(2,2);							//this is the k2 dependent Hamiltonian matrix
 	
 
 
