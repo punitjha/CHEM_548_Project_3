@@ -11,7 +11,6 @@ Created on Sat Apr 15 16:27:16 2017
 import matplotlib.pyplot as plt
 import numpy as np
 eigenvalues1=np.loadtxt('carbon1.txt')
-#eigenvalues1.sort(axis=0)
 ee=eigenvalues1[::]
 x1=np.linspace(-3.14,3.14,len(ee) )
 plt.plot(x1,ee)
