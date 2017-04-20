@@ -33,7 +33,7 @@ int main()
 	const double pi = 3.1415926535897;			
 	string filename;
 	int atoms;							//storage for no. of atoms
-	arma::vec k1=arma::linspace(-pi, pi, 100);	//wavefactor k1
+	arma::vec k1=arma::linspace(-pi, pi,100);	//wavefactor k1
 	int k1_len=k1.n_elem;					//k1 and k2 len same
 	arma::vec k2=arma::linspace(-pi, pi, 100);	//wavefactor k2
 	complex <double> I(0.0,1.0);				//complex no. I  
@@ -380,15 +380,14 @@ int main()
 	arma::cx_mat Hck_p(2,2);					//Huckel matrix
 	arma::cx_vec ee_p;						//vec-eigenvalues
 	arma::cx_mat ev_p;						//matrix-eigenvectors
-	fstream myfile_p("poly.txt", fstream::out|fstream::trunc);
-	arma::vec delta_1=arma::linspace(-0.25,0.25,100);
+	fstream myfile_p("poly1.txt", fstream::out|fstream::trunc);
+	arma::vec delta_1=arma::linspace(-0.45,0.45,1000);
 	int delta_1_len=delta_1.n_elem;
 	arma::vec ee_poly=arma::zeros(delta_1_len);
-	arma::vec del_k=arma::zeros(delta_1_len);
+	arma::mat ee_store=arma::zeros(delta_1_len,2);
 //	int marker=0;
 	for(int j=0; j<delta_1_len;j++)
 	{	
-		double product=0.0;
 		double sum=0.0;
 		for(int i=0; i<k1_len; i++)					//initializing -Huckel matrix
 		{
@@ -400,15 +399,12 @@ int main()
 			arma::eig_gen(ee_p,ev_p,Hck_p); 			//calculating the eigenvalues 
 			arma::vec eigen_ll=arma::real(ee_p);
 			sum=sum+eigen_ll(1);
-			product=product+0.5*k1(i)*2.0*delta_1(j)*delta_1(j);
-			cout<<"this is the product individually"<<product<<endl;
-//			ee_poly.row(marker)+=eigen_ll.t();
-//			myfile_p<<eigen_ll(0)<<'\t'<<eigen_ll(1)<<endl;                    
-//			marker++;
+			if(i==0)
+			{
+				ee_store.row(j)+=eigen_ll.t();
+			}
 		}
 	ee_poly(j)=sum;
-	del_k(j)=product;
-	cout<<ee_poly(j)<<'\t'<<del_k(j)<<endl;
 	}
 	//ee_poly.print();
 	//cout<<endl;
@@ -416,8 +412,8 @@ int main()
 	arma::vec ee_hck=arma::zeros(delta_1_len);
 	for(int i=0; i<delta_1_len; i++)
 	{
-		ee_hck(i)=(1/k1_len)*(ee_poly(i)+del_k(i));
-		myfile_p<<delta_1(i)<<'\t'<<ee_hck(i)<<endl;
+		ee_hck(i)=((1.0/k1_len)*ee_poly(i))+0.5*3.0*delta_1(i)*delta_1(i)*2.0;
+		myfile_p<<delta_1(i)<<'\t'<<ee_hck(i)<<'\t'<<(ee_poly(i)/(k1_len))<<endl;
 	}
 	double a=-1+0.25;
 	complex	<double> b=exp(I*3.14);
