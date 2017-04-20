@@ -350,7 +350,6 @@ int main()
 				}
 		      }
 		}
-//		Huckel_b.print();
 		arma::vec eg_b;
 		arma::mat ev_b;
 		arma::eig_sym(eg_b, ev_b, Huckel_b); 	//eigenvalues
@@ -359,7 +358,7 @@ int main()
 //	  	eigen_b.print();
 //		cout<<endl;
 	}
-	eigen_b.print();
+	//eigen_b.print();
 	//delta.print();
 	fstream myfile_11("ben_sym.txt", fstream::out|fstream::trunc);
 	arma::vec ee_b=arma::zeros(delta_len);
@@ -378,25 +377,43 @@ int main()
 //*******************************************************************************
 
 
-
-
 	arma::cx_mat Hck_p(2,2);					//Huckel matrix
 	arma::cx_vec ee_p;						//vec-eigenvalues
 	arma::cx_mat ev_p;						//matrix-eigenvectors
 	fstream myfile_p("poly.txt", fstream::out|fstream::trunc);
 	arma::vec delta_1=arma::linspace(-0.25,0.25,100);
-	for(int j=0; )	
-	for(int i=0; i<k1_len; i++)					//initializing -Huckel matrix
-	{
-		Hck_p(0,0)=0;
-		Hck_p(0,1)=(-exp(-I*k1(i)))-1.0;
-		Hck_p(1,0)=-1.0-exp(I*k1(i));
-		Hck_p(1,1)=0;
-		arma::eig_gen(ee_p,ev_p,Hck_p); 			//calculating the eigenvalues 
-		myfile_p<<arma::real(eigenvalues222);                   //writing the eigenvalues to a file 
+	int delta_1_len=delta_1.n_elem;
+	arma::vec ee_poly=arma::zeros(delta_1_len);
+	arma::vec del_k=arma::zeros(delta_1_len);
+//	int marker=0;
+	for(int j=0; j<delta_1_len;j++)
+	{	
+		double product=0;
+		double sum=0;
+		for(int i=0; i<k1_len; i++)					//initializing -Huckel matrix
+		{
+			Hck_p(0,0)=0;
+			Hck_p(0,1)=(-1-delta_1(j))*exp(-I*k1(i))+(-1.0+delta_1(j));
+			Hck_p(1,0)=(-1-delta_1(j))*exp(I*k1(i))+(-1.0+delta_1(j));
+			Hck_p(1,1)=0;
+			arma::eig_gen(ee_p,ev_p,Hck_p); 			//calculating the eigenvalues 
+			arma::vec eigen_ll=arma::real(ee_p);
+			sum=sum+eigen_ll(1);
+			product=product+0.5*k1(i)*delta_1(j)*delta_1(j);
+//			ee_poly.row(marker)+=eigen_ll.t();
+//			myfile_p<<eigen_ll(0)<<'\t'<<eigen_ll(1)<<endl;                    
+//			marker++;
+		} 
+	ee_poly(j)=sum;
+	del_k(j)=product;
 	}
-
-
+	ee_poly.print();
+	arma::vec ee_hck=arma::zeros(delta_1_len);
+	for(int i=0; i<delta_1_len; i++)
+	{
+		ee_hck(i)=(1/delta_1_len)*ee_poly(i)+del_k(i);
+		myfile_p<<delta_1(i)<<'\t'<<ee_hck(i)<<endl;
+	}
 
 
 
