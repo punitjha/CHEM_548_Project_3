@@ -343,10 +343,10 @@ int main()
 			      {
 					if((row+col != 3) && (row+col != 9)) 			//look at H 
 					{
-						  Huckel_b(row,col)=-1+delta(i);
+						  Huckel_b(row,col)=-1.0+delta(i);
 					}
 					else
-						  Huckel_b(row,col)=-1-2*delta(i);
+						  Huckel_b(row,col)=-1.0-2.0*delta(i);
 				}
 		      }
 		}
@@ -365,8 +365,8 @@ int main()
 	arma::vec ee_bc=arma::zeros(delta_len);
 	for(int i=0; i<delta_len;i++)
 	{
-		ee_b(i)=2*eigen_b(i,0)+2*eigen_b(i,1)+2*eigen_b(i,2)+(0.5*5*(12*delta(i)*delta(i)));
-		ee_bc(i)=2*eigen_b(i,0)+2*eigen_b(i,1)+eigen_b(i,2)+(0.5*5*(12*delta(i)*delta(i)));
+		ee_b(i)=2.0*eigen_b(i,0)+2.0*eigen_b(i,1)+2.0*eigen_b(i,2)+(0.5*5.0*(12*delta(i)*delta(i)));
+		ee_bc(i)=2.0*eigen_b(i,0)+2.0*eigen_b(i,1)+eigen_b(i,2)+(0.5*5.0*(12*delta(i)*delta(i)));
 		myfile_11<<delta(i)<<'\t'<<ee_b(i)<<'\t'<<ee_bc(i)<<endl;
 	}
 
@@ -388,34 +388,42 @@ int main()
 //	int marker=0;
 	for(int j=0; j<delta_1_len;j++)
 	{	
-		double product=0;
-		double sum=0;
+		double product=0.0;
+		double sum=0.0;
 		for(int i=0; i<k1_len; i++)					//initializing -Huckel matrix
 		{
-			Hck_p(0,0)=0;
-			Hck_p(0,1)=(-1-delta_1(j))*exp(-I*k1(i))+(-1.0+delta_1(j));
-			Hck_p(1,0)=(-1-delta_1(j))*exp(I*k1(i))+(-1.0+delta_1(j));
-			Hck_p(1,1)=0;
+			Hck_p(0,0)=0.0;
+			Hck_p(0,1)=((-1.0-delta_1(j))*exp(-I*k1(i)))+(-1.0+delta_1(j));
+			Hck_p(1,0)=((-1.0-delta_1(j))*exp(I*k1(i)))+(-1.0+delta_1(j));
+		//	cout<<Hck_p(1,0)<<endl;
+			Hck_p(1,1)=0.0;
 			arma::eig_gen(ee_p,ev_p,Hck_p); 			//calculating the eigenvalues 
 			arma::vec eigen_ll=arma::real(ee_p);
 			sum=sum+eigen_ll(1);
-			product=product+0.5*k1(i)*delta_1(j)*delta_1(j);
+			product=product+0.5*k1(i)*2.0*delta_1(j)*delta_1(j);
+			cout<<"this is the product individually"<<product<<endl;
 //			ee_poly.row(marker)+=eigen_ll.t();
 //			myfile_p<<eigen_ll(0)<<'\t'<<eigen_ll(1)<<endl;                    
 //			marker++;
-		} 
+		}
 	ee_poly(j)=sum;
 	del_k(j)=product;
+	cout<<ee_poly(j)<<'\t'<<del_k(j)<<endl;
 	}
-	ee_poly.print();
+	//ee_poly.print();
+	//cout<<endl;
+	//del_k.print();
 	arma::vec ee_hck=arma::zeros(delta_1_len);
 	for(int i=0; i<delta_1_len; i++)
 	{
-		ee_hck(i)=(1/delta_1_len)*ee_poly(i)+del_k(i);
+		ee_hck(i)=(1/k1_len)*(ee_poly(i)+del_k(i));
 		myfile_p<<delta_1(i)<<'\t'<<ee_hck(i)<<endl;
 	}
-
-
+	double a=-1+0.25;
+	complex	<double> b=exp(I*3.14);
+	double c=(-1.0-0.25);
+	cout<<a<<b<<c<<endl;
+	cout<<a*b+c;
 
 
 
