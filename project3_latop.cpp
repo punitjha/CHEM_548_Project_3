@@ -86,13 +86,10 @@ int main()
 	arma::mat eigenvectors;
 	arma::eig_sym(eigenvalues, eigenvectors, Huckel); 	//eigenvalues and the eigenvectors matrix
 	eigenvalues.print();
-//	eigenvectors.print();
 	arma::vec eigenvalues2;
 	arma::mat eigenvectors2;
 	arma::eig_sym(eigenvalues2, eigenvectors2, Huckel2);
 	eigenvalues2.print();
-//	eigenvectors2.print();
-//	arma::cx_mat HB= arma::zeros<arma::cx_mat>(4,4);
 	
 
 
@@ -214,25 +211,34 @@ int main()
 	arma::cx_mat mat_30(carbon10,carbon10);				//third  matrix in the H
 	arma::cx_vec eigencarbon10;						//eigenvalues 
 	arma::cx_mat eigenvec_carbons10;					//eigenvectors
-	int diag_marker10 =9;							//mark anti-diagonal matrix ele
-	mat_10(carbon10-1,0)=-1;						//lowermost corner element as -
-	mat_30(0,carbon10-1)=-1;						//topmost corner element as -1 	
+	mat_10(carbon10-1,0)=-1.0;						//lowermost corner element as -
+	mat_30(0,carbon10-1)=-1.0;						//topmost corner element as -1 	
+	mat_20(0,carbon10-1)=mat_20(carbon10-1,0)=-1.0;
+	int diag=2;
 	for(int i=0; i<10; i++)
 	{
+		if((diag-i)==1 && (diag!= 10))
+		{
+			mat_20(diag,i)=mat_20(i,diag)=-1.0;
+			diag=diag+2;
+		}
 		for (int j=0; j<10; j++)				      //matrix elements-- mat_1 and mat_2
 		{
 			if((j-i) == 1)
 			{
-				mat_10(i,j)=-1;
+				mat_10(i,j)=-1.0;
 			}
 			if ((i-j)==1)
 			{
-				mat_30(i,j)=-1;
+				mat_30(i,j)=-1.0;
 			}
 		}
-		mat_20(i,diag_marker10)=-1;
-		diag_marker10--;
 	}
+	mat_10.print("this is mat_10");
+	cout<<endl;
+	mat_20.print("this is mat_20");
+	cout<<endl;
+	mat_30.print("this is mat_30");
 	for (int i=0; i<k1_len; i++)
 	{	
 		Huckel_10=mat_10*exp(-I*k1(i))+mat_20+mat_30*exp(I*k1(i));  //H matrix sum of mat_1, mat_2, mat_3
@@ -353,13 +359,8 @@ int main()
 		arma::vec eg_b;
 		arma::mat ev_b;
 		arma::eig_sym(eg_b, ev_b, Huckel_b); 	//eigenvalues
-		//arma::vec eg_b1=arma::sort(eg_b);
 		eigen_b.row(i)+=eg_b.t();
-//	  	eigen_b.print();
-//		cout<<endl;
 	}
-	//eigen_b.print();
-	//delta.print();
 	fstream myfile_11("ben_sym.txt", fstream::out|fstream::trunc);
 	arma::vec ee_b=arma::zeros(delta_len);
 	arma::vec ee_bc=arma::zeros(delta_len);
@@ -381,11 +382,10 @@ int main()
 	arma::cx_vec ee_p;						//vec-eigenvalues
 	arma::cx_mat ev_p;						//matrix-eigenvectors
 	fstream myfile_p("poly1.txt", fstream::out|fstream::trunc);
-	arma::vec delta_1=arma::linspace(-0.45,0.45,1000);
+	arma::vec delta_1=arma::linspace(-0.25,0.25,1000);
 	int delta_1_len=delta_1.n_elem;
 	arma::vec ee_poly=arma::zeros(delta_1_len);
 	arma::mat ee_store=arma::zeros(delta_1_len,2);
-//	int marker=0;
 	for(int j=0; j<delta_1_len;j++)
 	{	
 		double sum=0.0;
@@ -394,7 +394,6 @@ int main()
 			Hck_p(0,0)=0.0;
 			Hck_p(0,1)=((-1.0-delta_1(j))*exp(-I*k1(i)))+(-1.0+delta_1(j));
 			Hck_p(1,0)=((-1.0-delta_1(j))*exp(I*k1(i)))+(-1.0+delta_1(j));
-		//	cout<<Hck_p(1,0)<<endl;
 			Hck_p(1,1)=0.0;
 			arma::eig_gen(ee_p,ev_p,Hck_p); 			//calculating the eigenvalues 
 			arma::vec eigen_ll=arma::real(ee_p);
@@ -406,20 +405,12 @@ int main()
 		}
 	ee_poly(j)=sum;
 	}
-	//ee_poly.print();
-	//cout<<endl;
-	//del_k.print();
 	arma::vec ee_hck=arma::zeros(delta_1_len);
 	for(int i=0; i<delta_1_len; i++)
 	{
-		ee_hck(i)=((1.0/k1_len)*ee_poly(i))+0.5*3.0*delta_1(i)*delta_1(i)*2.0;
+		ee_hck(i)=((1.0/k1_len)*ee_poly(i))+0.5*2.0*delta_1(i)*delta_1(i)*2.0;
 		myfile_p<<delta_1(i)<<'\t'<<ee_hck(i)<<'\t'<<(ee_poly(i)/(k1_len))<<endl;
 	}
-	double a=-1+0.25;
-	complex	<double> b=exp(I*3.14);
-	double c=(-1.0-0.25);
-	cout<<a<<b<<c<<endl;
-	cout<<a*b+c;
 
 
 
