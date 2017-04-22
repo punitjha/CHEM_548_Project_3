@@ -30,7 +30,7 @@ int main()
 //**************************************************************************
 
 
-	const double pi = 3.1415926535897;			
+	const double pi = 3.1415926535898;			
 	string filename;
 	int atoms;							//storage for no. of atoms
 	arma::vec k1=arma::linspace(-pi, pi,100);	//wavefactor k1
@@ -234,11 +234,6 @@ int main()
 			}
 		}
 	}
-	mat_10.print("this is mat_10");
-	cout<<endl;
-	mat_20.print("this is mat_20");
-	cout<<endl;
-	mat_30.print("this is mat_30");
 	for (int i=0; i<k1_len; i++)
 	{	
 		Huckel_10=mat_10*exp(-I*k1(i))+mat_20+mat_30*exp(I*k1(i));  //H matrix sum of mat_1, mat_2, mat_3
@@ -413,10 +408,50 @@ int main()
 	}
 
 
+//*******************************************************************************
+//										*
+// Using the Extended Huckel theory to demonstrate the origin of the Jahn-Teller*
+// Based on Sohlber et all, J. Chem. Educ. 2013, 90 (4), 463–469.		*
+//										*	
+//*******************************************************************************
 
-
-
-
+	const double R=(1.39/0.529);			//the bond lenght in Bohr
+	const double Z=1.56;				//orbital exponent
+	const double Z_eff=1.95;			//effective nuclear charge
+	arma::vec w=arma::linspace(0.02,0.4,2);	//the distortion parameter in b
+	w.print();
+	int w_len=w.n_elem;
+	for(int i=0; i<w_len; i++)
+	{
+		int mark=0;
+		arma::vec a_val;
+		arma::vec b_val;
+		arma::vec x_val;
+		double a_ang=(2.0/3.0)*pi;
+		double x1_len=0.0;
+		double x2_len=0.0;
+		cout<<a_ang<<"this is agl";
+		while(a_ang>0.1)
+		{
+			double b_ang=(2.0/3.0)*pi-a_ang;
+			x1_len=sqrt(((R-w(i))*(R-w(i)))/(2-2*cos(a_ang)));
+			x2_len=sqrt(((R+w(i))*(R+w(i)))/(2-2*cos(b_ang)));
+			cout<<b_ang<<" "<<a_ang<<" "<<x1_len<<" "<<x2_len<<endl;
+			if( (x1_len==x2_len) && (x1_len >0) && (x2_len >0) )
+			{
+				cout<<"this is mark"<<mark<<endl;
+				cout<<a_ang<<b_ang<<x1_len<<endl;
+				a_val(mark)=a_ang;
+				b_val(mark)=b_ang;
+				x_val(mark)=x1_len;
+				mark++;
+			}
+		a_ang=a_ang-0.0001;
+		}
+	a_val.print();
+	b_val.print(); 
+        x_val.print();
+	}
 
 
 
