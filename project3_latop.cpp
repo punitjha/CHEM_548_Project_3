@@ -421,37 +421,51 @@ int main()
 	arma::vec w=arma::linspace(0.02,0.5,30);	//the distortion parameter in b
 	w.print();
 	int w_len=w.n_elem;
+	arma::mat a_val(w_len,5);
+	arma::mat b_val(w_len,5);
+	arma::mat x_val(w_len,5);
 	for(int i=0; i<w_len; i++)
 	{
-		int mark=0;
-		arma::vec a_val(50);
-		arma::vec b_val(50);
-		arma::vec x_val(50);
+		int col=0;
 		double a_ang=(2.0/6.0)*pi;
 		double x1_len=0.0;
 		double x2_len=0.0;
-		cout<<a_ang<<"this is agl";
 		while(a_ang>(2.0/9.0)*pi)
 		{
 			double b_ang=(2.0/3.0)*pi-a_ang;
 			x1_len=sqrt(((R-w(i))*(R-w(i)))/(2-2*cos(a_ang)));
 			x2_len=sqrt(((R+w(i))*(R+w(i)))/(2-2*cos(b_ang)));
 	//		cout<<b_ang<<" "<<a_ang<<" "<<x1_len<<" "<<x2_len<<endl;
-			if(abs(x1_len-x2_len) < 0.00001 )
+			if(abs(x1_len-x2_len) < 0.0001 )
 			{
-				//cout<<"this is mark"<<mark<<endl;
+				//cout<<"this is col"<<col<<endl;
 				//cout<<a_ang<<b_ang<<x1_len<<endl;
-				a_val(mark)=a_ang;
-				b_val(mark)=b_ang;
-				x_val(mark)=x1_len;
-				mark++;
+				if (col == 0)
+				{
+					a_val(i,col)=a_ang;
+					b_val(i,col)=b_ang;
+					x_val(i,col)=x1_len;
+					col++;
+
+				}
+				else
+				{
+					if (abs((x_val(i,col-1))-(x1_len))<0.00001 )
+					{
+						cout<<x_val(i,col-1)<<" "<<x1_len<<" "<<abs((x_val(i,col-1))-(x1_len))<<endl;
+						a_val(i,col)=a_ang;
+						b_val(i,col)=b_ang;
+						x_val(i,col)=x1_len;
+						col++;
+					}
+				}
 			}
-		a_ang=a_ang-0.00001;
+			a_ang=a_ang-0.00001;
 		}
+	}
 	a_val.print("this is a");
 	b_val.print("this is b"); 
-        x_val.print("this is x");
-	}
+	x_val.print("this is x");
 
 
 
