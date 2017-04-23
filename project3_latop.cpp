@@ -418,39 +418,39 @@ int main()
 	const double R=(1.39/0.529);			//the bond lenght in Bohr
 	const double Z=1.56;				//orbital exponent
 	const double Z_eff=1.95;			//effective nuclear charge
-	arma::vec w=arma::linspace(0.02,0.4,2);	//the distortion parameter in b
+	arma::vec w=arma::linspace(0.02,0.5,30);	//the distortion parameter in b
 	w.print();
 	int w_len=w.n_elem;
 	for(int i=0; i<w_len; i++)
 	{
 		int mark=0;
-		arma::vec a_val;
-		arma::vec b_val;
-		arma::vec x_val;
-		double a_ang=(2.0/3.0)*pi;
+		arma::vec a_val(50);
+		arma::vec b_val(50);
+		arma::vec x_val(50);
+		double a_ang=(2.0/6.0)*pi;
 		double x1_len=0.0;
 		double x2_len=0.0;
 		cout<<a_ang<<"this is agl";
-		while(a_ang>0.1)
+		while(a_ang>(2.0/9.0)*pi)
 		{
 			double b_ang=(2.0/3.0)*pi-a_ang;
 			x1_len=sqrt(((R-w(i))*(R-w(i)))/(2-2*cos(a_ang)));
 			x2_len=sqrt(((R+w(i))*(R+w(i)))/(2-2*cos(b_ang)));
-			cout<<b_ang<<" "<<a_ang<<" "<<x1_len<<" "<<x2_len<<endl;
-			if( (x1_len==x2_len) && (x1_len >0) && (x2_len >0) )
+	//		cout<<b_ang<<" "<<a_ang<<" "<<x1_len<<" "<<x2_len<<endl;
+			if(abs(x1_len-x2_len) < 0.00001 )
 			{
-				cout<<"this is mark"<<mark<<endl;
-				cout<<a_ang<<b_ang<<x1_len<<endl;
+				//cout<<"this is mark"<<mark<<endl;
+				//cout<<a_ang<<b_ang<<x1_len<<endl;
 				a_val(mark)=a_ang;
 				b_val(mark)=b_ang;
 				x_val(mark)=x1_len;
 				mark++;
 			}
-		a_ang=a_ang-0.0001;
+		a_ang=a_ang-0.00001;
 		}
-	a_val.print();
-	b_val.print(); 
-        x_val.print();
+	a_val.print("this is a");
+	b_val.print("this is b"); 
+        x_val.print("this is x");
 	}
 
 
