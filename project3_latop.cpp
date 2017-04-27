@@ -501,6 +501,7 @@ int main()
 	arma::mat Ham=arma::zeros(6,6);
 	Ham.diag().fill(-10.77/27.212);
 	arma::vec Elec=arma::zeros(w_len);
+	arma::vec Elec_cat=arma::zeros(w_len);
 	arma::vec Enuc=arma::zeros(w_len);
 	for(int i=0;i<w_len;i++)
 	{
@@ -528,7 +529,10 @@ int main()
 		S(1,2)=(1+Z*r23(i)+(2*Z*Z*r23(i)*r23(i))/5+(Z*Z*Z*r23(i)*r23(i)*r23(i))/15)*exp(-Z*r23(i));
 		S(3,4)=S(1,2);
 		S(0,5)=S(1,2);
-		S=S+S.t();
+		arma::mat A=S.t();
+		arma::mat B=S;
+		S=A+B;
+	//	S.print("this is initial S");
 		S.diag().fill(1);
 	//	S.print(" this is S");
 	//	cout<<endl;
@@ -539,31 +543,32 @@ int main()
 			{
 				if(row!=col)
 				{
-//					cout<<row<<" "<<col<<"  "<<endl;
+				//	cout<<row<<" "<<col<<"  "<<endl;
 					Ham(row,col)=0.875*S(row,col)*(Ham(row,row)+Ham(col,col));
 				}
 			}
 		}
-	S.print("this is S");
-	cout<<endl;
-	Ham.print("this is H");
-	cout<<endl;
-	arma::mat temp_H=Ham-S;
-	arma::cx_vec ee;
-	arma::cx_mat ev;
-	arma::eig_gen(ee,ev,temp_H);
-	arma::vec e_real=arma::real(ee);
-	e_real=arma::sort(e_real);
-	e_real.print();
-//	Ham.raw_print();
-	cout<<endl;
-	//Computing the electronic energies 
-	Elec(i)=2*e_real(0)+e_real(1)*2+e_real(2)*2;
-	} 
-	Elec.print("this is the Elec");
+		S.print("this is S");
+		cout<<endl;
+		Ham.print("this is H");
+		cout<<endl;
+		arma::mat temp_H=Ham-S;
+		temp_H.print();
+		arma::cx_vec ee;
+		arma::cx_mat ev;
+		arma::eig_pair(ee,ev,Ham,S);
+		arma::vec e_real=arma::real(ee);
+		e_real=arma::sort(e_real);
+		e_real.print();
+		cout<<endl;
+		Elec(i)=2*e_real(0)+2*e_real(1)+2*e_real(2);
+		Elec_cat(i)=2*e_real(0)+e_real(1)*2+e_real(2);
+		S=arma::zeros(6,6);
+	}
+	Elec_cat.print("this is the Elec");
 	Enuc.print("this is the Enuc");
-	arma::vec Etot=Elec+Enuc;
-	Etot.print();
+	arma::vec Etot=Elec_cat+Enuc;
+	Etot.raw_print();
 
 
 
