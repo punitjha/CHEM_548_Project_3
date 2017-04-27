@@ -419,7 +419,7 @@ int main()
 	const double Z=1.56;				//orbital exponent
 	const double Z_eff=1.95;			//effective nuclear charge
 	arma::vec w=arma::linspace(0.02,0.5,30);	//the distortion parameter in b
-	w.print();
+//	w.print();
 	int w_len=w.n_elem;
 	arma::mat a_val(w_len,2);
 	arma::mat b_val(w_len,2);
@@ -468,14 +468,102 @@ int main()
 //	x_val.print("this is x");
 	arma::mat c_ang=(pi-a_val)/2;
 	arma::mat d_ang=(pi-b_val)/2;
-	d_ang.print();
-	double r12=
-
-
-
-
-
-
+//	c_ang.print("this is c");
+	arma::vec r12=R-w;
+	arma::vec r23=R+w;
+	arma::vec r13=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+	       	r13(i)=sqrt(r12(i)*r12(i)+r23(i)*r23(i)-(2*r12(i)*r23(i))*cos(c_ang(i,0)+d_ang(i,0)));
+	}
+//	r13.print("this is r13");
+	arma::vec r14=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		r14(i)=sqrt(2*x_val(i,0)*x_val(i,0)-2*x_val(i,0)*x_val(i,0)*cos(2*a_val(i,0)+b_val(i,0)));
+	}
+//	r14.print("this is r14");
+	//setting the values of non-unique interaction distances according to symmetry
+	arma::vec r34=r12;
+	arma::vec r56=r12;
+	arma::vec r45=r23;
+	arma::vec r16=r23;
+	arma::vec r24=r13;
+	arma::vec r35=r13;
+	arma::vec r46=r13;
+	arma::vec r15=r13;
+	arma::vec r26=r13;
+	arma::vec r36=r14;
+	arma::vec r25=r14;
+//	r14.raw_print("this r14");
+//	r25.raw_print("this is r25");
+	arma::mat S=arma::zeros(6,6);
+	arma::mat Ham=arma::zeros(6,6);
+	Ham.diag().fill(-10.77/27.212);
+	arma::vec Elec=arma::zeros(w_len);
+	arma::vec Enuc=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		Enuc(i)=Z_eff*Z_eff/r12(i)+Z_eff*Z_eff/r13(i)+Z_eff*Z_eff/r14(i)+Z_eff*Z_eff/r15(i)+
+			Z_eff*Z_eff/r16(i)+Z_eff*Z_eff/r23(i)+Z_eff*Z_eff/r24(i)+Z_eff*Z_eff/r25(i)+
+			Z_eff*Z_eff/r26(i)+Z_eff*Z_eff/r34(i)+Z_eff*Z_eff/r35(i)+Z_eff*Z_eff/r36(i)+
+			Z_eff*Z_eff/r45(i)+Z_eff*Z_eff/r46(i)+Z_eff*Z_eff/r56(i);
+	}
+//	Ham.print();
+	for(int i=0; i<w_len;i++)
+	{
+		S(0,2)=(1+Z*r13(i)+(2*Z*Z*r13(i)*r13(i))/5+(Z*Z*Z*r13(i)*r13(i)*r13(i))/15)*exp(-Z*r13(i));
+		S(0,3)=(1+Z*r14(i)+(2*Z*Z*r14(i)*r14(i))/5+(Z*Z*Z*r14(i)*r14(i)*r14(i))/15)*exp(-Z*r14(i));
+		S(0,4)=(1+Z*r15(i)+(2*Z*Z*r15(i)*r15(i))/5+(Z*Z*Z*r15(i)*r15(i)*r15(i))/15)*exp(-Z*r15(i));
+		S(1,3)=(1+Z*r24(i)+(2*Z*Z*r24(i)*r24(i))/5+(Z*Z*Z*r24(i)*r24(i)*r24(i))/15)*exp(-Z*r24(i));
+		S(1,4)=(1+Z*r25(i)+(2*Z*Z*r25(i)*r25(i))/5+(Z*Z*Z*r25(i)*r25(i)*r25(i))/15)*exp(-Z*r25(i));
+		S(1,5)=(1+Z*r26(i)+(2*Z*Z*r26(i)*r26(i))/5+(Z*Z*Z*r26(i)*r26(i)*r26(i))/15)*exp(-Z*r26(i));
+		S(2,4)=(1+Z*r35(i)+(2*Z*Z*r35(i)*r35(i))/5+(Z*Z*Z*r35(i)*r35(i)*r35(i))/15)*exp(-Z*r35(i));
+		S(2,5)=(1+Z*r36(i)+(2*Z*Z*r36(i)*r36(i))/5+(Z*Z*Z*r36(i)*r36(i)*r36(i))/15)*exp(-Z*r36(i));
+		S(3,5)=(1+Z*r46(i)+(2*Z*Z*r46(i)*r46(i))/5+(Z*Z*Z*r46(i)*r46(i)*r46(i))/15)*exp(-Z*r46(i));
+	//setting the S matrix for the bonded atoms
+		S(0,1)=(1+Z*r12(i)+(2*Z*Z*r12(i)*r12(i))/5+(Z*Z*Z*r12(i)*r12(i)*r12(i))/15)*exp(-Z*r12(i));
+		S(2,3)=S(0,1);
+		S(4,5)=S(0,1);
+		S(1,2)=(1+Z*r23(i)+(2*Z*Z*r23(i)*r23(i))/5+(Z*Z*Z*r23(i)*r23(i)*r23(i))/15)*exp(-Z*r23(i));
+		S(3,4)=S(1,2);
+		S(0,5)=S(1,2);
+		S=S+S.t();
+		S.diag().fill(1);
+	//	S.print(" this is S");
+	//	cout<<endl;
+	//loop to initialize the matrix elements of the Hamiltonian Marix
+		for(int row=0;row<6;row++)
+		{
+			for(int col=0;col<6;col++)
+			{
+				if(row!=col)
+				{
+//					cout<<row<<" "<<col<<"  "<<endl;
+					Ham(row,col)=0.875*S(row,col)*(Ham(row,row)+Ham(col,col));
+				}
+			}
+		}
+	S.print("this is S");
+	cout<<endl;
+	Ham.print("this is H");
+	cout<<endl;
+	arma::mat temp_H=Ham-S;
+	arma::cx_vec ee;
+	arma::cx_mat ev;
+	arma::eig_gen(ee,ev,temp_H);
+	arma::vec e_real=arma::real(ee);
+	e_real=arma::sort(e_real);
+	e_real.print();
+//	Ham.raw_print();
+	cout<<endl;
+	//Computing the electronic energies 
+	Elec(i)=2*e_real(0)+e_real(1)*2+e_real(2)*2;
+	} 
+	Elec.print("this is the Elec");
+	Enuc.print("this is the Enuc");
+	arma::vec Etot=Elec+Enuc;
+	Etot.print();
 
 
 
