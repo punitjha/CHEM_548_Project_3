@@ -548,27 +548,25 @@ int main()
 				}
 			}
 		}
-		S.print("this is S");
-		cout<<endl;
-		Ham.print("this is H");
-		cout<<endl;
-		arma::mat temp_H=Ham-S;
-		temp_H.print();
+		//S.print("this is S");
+		//cout<<endl;
+		//Ham.print("this is H");
+		//cout<<endl;
 		arma::cx_vec ee;
 		arma::cx_mat ev;
 		arma::eig_pair(ee,ev,Ham,S);
 		arma::vec e_real=arma::real(ee);
 		e_real=arma::sort(e_real);
-		e_real.print();
-		cout<<endl;
+		//e_real.print();
+		//cout<<endl;
 		Elec(i)=2*e_real(0)+2*e_real(1)+2*e_real(2);
 		Elec_cat(i)=2*e_real(0)+e_real(1)*2+e_real(2);
 		S=arma::zeros(6,6);
 	}
-	Elec_cat.print("this is the Elec");
-	Enuc.print("this is the Enuc");
+	//Elec_cat.print("this is the Elec");
+	//Enuc.print("this is the Enuc");
 	arma::vec Etot=Elec_cat+Enuc;
-	Etot.raw_print();
+	//Etot.raw_print();
 
 //*******************************************************************************************************
 //
@@ -633,7 +631,6 @@ int main()
 	{
 	       	c_r13(i)=sqrt(2)*x_cote(i);
 	}
-//	r13.print("this is r13");
 	arma::vec c_r14=arma::zeros(w_len);
 	for(int i=0;i<w_len;i++)
 	{
@@ -650,7 +647,6 @@ int main()
 		c_r15(i)=2*x_cote(i);
 	}
 
-//	r14.print("this is r14");
 	//setting the values of non-unique interaction distances according to symmetry
 	arma::vec c_r34=c_r12;
 	arma::vec c_r56=c_r12;
@@ -674,80 +670,91 @@ int main()
 	arma::vec c_r26=c_r15;
 	arma::vec c_r37=c_r15;
 	arma::vec c_r48=c_r15;
-
-	arma::mat S=arma::zeros(8,8);
-	arma::mat Ham=arma::zeros(8,8);
-	Ham.diag().fill(-10.77/27.212);
-	arma::vec Elec=arma::zeros(w_len);
-	arma::vec Elec_cat=arma::zeros(w_len);
-	arma::vec Enuc=arma::zeros(w_len);
+	arma::mat S_c=arma::zeros(8,8);
+	arma::mat Ham_cote=arma::zeros(8,8);
+	Ham_cote.diag().fill(-10.77/27.212);
+	arma::vec Elec_cote=arma::zeros(w_len);
+	arma::vec Enuc_cote=arma::zeros(w_len);
 	for(int i=0;i<w_len;i++)
 	{
-		Enuc(i)=Z_eff*Z_eff/r12(i)+Z_eff*Z_eff/r13(i)+Z_eff*Z_eff/r14(i)+Z_eff*Z_eff/r15(i)+
-			Z_eff*Z_eff/r16(i)+Z_eff*Z_eff/r23(i)+Z_eff*Z_eff/r24(i)+Z_eff*Z_eff/r25(i)+
-			Z_eff*Z_eff/r26(i)+Z_eff*Z_eff/r34(i)+Z_eff*Z_eff/r35(i)+Z_eff*Z_eff/r36(i)+
-			Z_eff*Z_eff/r45(i)+Z_eff*Z_eff/r46(i)+Z_eff*Z_eff/r56(i);
+		Enuc_cote(i)=Z_eff*Z_eff/c_r12(i)+Z_eff*Z_eff/c_r13(i)+Z_eff*Z_eff/c_r14(i)+Z_eff*Z_eff/c_r15(i)+
+			Z_eff*Z_eff/c_r16(i)+Z_eff*Z_eff/c_r17(i)+Z_eff*Z_eff/c_r18(i)+
+			Z_eff*Z_eff/c_r23(i)+Z_eff*Z_eff/c_r24(i)+Z_eff*Z_eff/c_r25(i)+Z_eff*Z_eff/c_r26(i)+
+			Z_eff*Z_eff/c_r27(i)+Z_eff*Z_eff/c_r28(i)+
+			Z_eff*Z_eff/c_r34(i)+Z_eff*Z_eff/c_r35(i)+Z_eff*Z_eff/c_r36(i)+Z_eff*Z_eff/c_r37(i)+
+			Z_eff*Z_eff/c_r38(i)+
+			Z_eff*Z_eff/c_r45(i)+Z_eff*Z_eff/c_r46(i)+Z_eff*Z_eff/c_r47(i)+Z_eff*Z_eff/c_r48(i)+
+			Z_eff*Z_eff/c_r56(i)+Z_eff*Z_eff/c_r57(i)+Z_eff*Z_eff/c_r58(i)+
+			Z_eff*Z_eff/c_r67(i)+Z_eff*Z_eff/c_r68(i)+
+			Z_eff*Z_eff/c_r78(i);
+
 	}
-	Ham.print();
 	for(int i=0; i<w_len;i++)
 	{
-		S(0,2)=(1+Z*r13(i)+(2*Z*Z*r13(i)*r13(i))/5+(Z*Z*Z*r13(i)*r13(i)*r13(i))/15)*exp(-Z*r13(i));
-		S(0,3)=(1+Z*r14(i)+(2*Z*Z*r14(i)*r14(i))/5+(Z*Z*Z*r14(i)*r14(i)*r14(i))/15)*exp(-Z*r14(i));
-		S(0,4)=(1+Z*r15(i)+(2*Z*Z*r15(i)*r15(i))/5+(Z*Z*Z*r15(i)*r15(i)*r15(i))/15)*exp(-Z*r15(i));
-		S(1,3)=(1+Z*r24(i)+(2*Z*Z*r24(i)*r24(i))/5+(Z*Z*Z*r24(i)*r24(i)*r24(i))/15)*exp(-Z*r24(i));
-		S(1,4)=(1+Z*r25(i)+(2*Z*Z*r25(i)*r25(i))/5+(Z*Z*Z*r25(i)*r25(i)*r25(i))/15)*exp(-Z*r25(i));
-		S(1,5)=(1+Z*r26(i)+(2*Z*Z*r26(i)*r26(i))/5+(Z*Z*Z*r26(i)*r26(i)*r26(i))/15)*exp(-Z*r26(i));
-		S(2,4)=(1+Z*r35(i)+(2*Z*Z*r35(i)*r35(i))/5+(Z*Z*Z*r35(i)*r35(i)*r35(i))/15)*exp(-Z*r35(i));
-		S(2,5)=(1+Z*r36(i)+(2*Z*Z*r36(i)*r36(i))/5+(Z*Z*Z*r36(i)*r36(i)*r36(i))/15)*exp(-Z*r36(i));
-		S(3,5)=(1+Z*r46(i)+(2*Z*Z*r46(i)*r46(i))/5+(Z*Z*Z*r46(i)*r46(i)*r46(i))/15)*exp(-Z*r46(i));
-	//setting the S matrix for the bonded atoms
-		S(0,1)=(1+Z*r12(i)+(2*Z*Z*r12(i)*r12(i))/5+(Z*Z*Z*r12(i)*r12(i)*r12(i))/15)*exp(-Z*r12(i));
-		S(2,3)=S(0,1);
-		S(4,5)=S(0,1);
-		S(1,2)=(1+Z*r23(i)+(2*Z*Z*r23(i)*r23(i))/5+(Z*Z*Z*r23(i)*r23(i)*r23(i))/15)*exp(-Z*r23(i));
-		S(3,4)=S(1,2);
-		S(0,5)=S(1,2);
-		arma::mat A=S.t();
-		arma::mat B=S;
-		S=A+B;
+		S_c(0,2)=(1+Z*c_r13(i)+(2*Z*Z*c_r13(i)*c_r13(i))/5+(Z*Z*Z*c_r13(i)*c_r13(i)*c_r13(i))/15)*exp(-Z*c_r13(i));
+		S_c(0,3)=(1+Z*c_r14(i)+(2*Z*Z*c_r14(i)*c_r14(i))/5+(Z*Z*Z*c_r14(i)*c_r14(i)*c_r14(i))/15)*exp(-Z*c_r14(i));
+		S_c(0,4)=(1+Z*c_r15(i)+(2*Z*Z*c_r15(i)*c_r15(i))/5+(Z*Z*Z*c_r15(i)*c_r15(i)*c_r15(i))/15)*exp(-Z*c_r15(i));
+		S_c(0,5)=(1+Z*c_r16(i)+(2*Z*Z*c_r16(i)*c_r16(i))/5+(Z*Z*Z*c_r16(i)*c_r16(i)*c_r16(i))/15)*exp(-Z*c_r16(i));
+		S_c(0,6)=(1+Z*c_r17(i)+(2*Z*Z*c_r17(i)*c_r17(i))/5+(Z*Z*Z*c_r17(i)*c_r17(i)*c_r17(i))/15)*exp(-Z*c_r17(i));
+		S_c(1,3)=(1+Z*c_r24(i)+(2*Z*Z*c_r24(i)*c_r24(i))/5+(Z*Z*Z*c_r24(i)*c_r24(i)*c_r24(i))/15)*exp(-Z*c_r24(i));
+		S_c(1,4)=(1+Z*c_r25(i)+(2*Z*Z*c_r25(i)*c_r25(i))/5+(Z*Z*Z*c_r25(i)*c_r25(i)*c_r25(i))/15)*exp(-Z*c_r25(i));
+		S_c(1,5)=(1+Z*c_r26(i)+(2*Z*Z*c_r26(i)*c_r26(i))/5+(Z*Z*Z*c_r26(i)*c_r26(i)*c_r26(i))/15)*exp(-Z*c_r26(i));
+		S_c(1,6)=(1+Z*c_r27(i)+(2*Z*Z*c_r27(i)*c_r27(i))/5+(Z*Z*Z*c_r27(i)*c_r27(i)*c_r27(i))/15)*exp(-Z*c_r27(i));
+		S_c(1,7)=(1+Z*c_r28(i)+(2*Z*Z*c_r28(i)*c_r28(i))/5+(Z*Z*Z*c_r28(i)*c_r28(i)*c_r28(i))/15)*exp(-Z*c_r28(i));
+		S_c(2,4)=(1+Z*c_r35(i)+(2*Z*Z*c_r35(i)*c_r35(i))/5+(Z*Z*Z*c_r35(i)*c_r35(i)*c_r35(i))/15)*exp(-Z*c_r35(i));
+		S_c(2,5)=(1+Z*c_r36(i)+(2*Z*Z*c_r36(i)*c_r36(i))/5+(Z*Z*Z*c_r36(i)*c_r36(i)*c_r36(i))/15)*exp(-Z*c_r36(i));
+		S_c(2,6)=(1+Z*c_r37(i)+(2*Z*Z*c_r37(i)*c_r37(i))/5+(Z*Z*Z*c_r37(i)*c_r37(i)*c_r37(i))/15)*exp(-Z*c_r37(i));
+		S_c(2,7)=(1+Z*c_r38(i)+(2*Z*Z*c_r38(i)*c_r38(i))/5+(Z*Z*Z*c_r38(i)*c_r38(i)*c_r38(i))/15)*exp(-Z*c_r38(i));
+		S_c(3,5)=(1+Z*c_r46(i)+(2*Z*Z*c_r46(i)*c_r46(i))/5+(Z*Z*Z*c_r46(i)*c_r46(i)*c_r46(i))/15)*exp(-Z*c_r46(i));
+		S_c(3,6)=(1+Z*c_r47(i)+(2*Z*Z*c_r47(i)*c_r47(i))/5+(Z*Z*Z*c_r47(i)*c_r47(i)*c_r47(i))/15)*exp(-Z*c_r47(i));
+		S_c(3,7)=(1+Z*c_r48(i)+(2*Z*Z*c_r48(i)*c_r48(i))/5+(Z*Z*Z*c_r48(i)*c_r48(i)*c_r48(i))/15)*exp(-Z*c_r48(i));
+		S_c(4,6)=(1+Z*c_r57(i)+(2*Z*Z*c_r57(i)*c_r57(i))/5+(Z*Z*Z*c_r57(i)*c_r57(i)*c_r57(i))/15)*exp(-Z*c_r57(i));
+		S_c(4,7)=(1+Z*c_r58(i)+(2*Z*Z*c_r58(i)*c_r58(i))/5+(Z*Z*Z*c_r58(i)*c_r58(i)*c_r58(i))/15)*exp(-Z*c_r58(i));
+		S_c(5,7)=(1+Z*c_r68(i)+(2*Z*Z*c_r68(i)*c_r68(i))/5+(Z*Z*Z*c_r68(i)*c_r68(i)*c_r68(i))/15)*exp(-Z*c_r68(i));
+	//setting the S matc_rix foc_r the bonded atoms
+		S_c(0,1)=(1+Z*c_r12(i)+(2*Z*Z*c_r12(i)*c_r12(i))/5+(Z*Z*Z*c_r12(i)*c_r12(i)*c_r12(i))/15)*exp(-Z*c_r12(i));
+		S_c(2,3)=S_c(0,1);
+		S_c(4,5)=S_c(0,1);
+		S_c(6,7)=S_c(0,1);
+		S_c(1,2)=(1+Z*c_r23(i)+(2*Z*Z*c_r23(i)*c_r23(i))/5+(Z*Z*Z*c_r23(i)*c_r23(i)*c_r23(i))/15)*exp(-Z*c_r23(i));
+		S_c(3,4)=S_c(1,2);
+		S_c(5,6)=S_c(1,2);
+		S_c(0,7)=S_c(1,2);
+		arma::mat A=S_c.t();
+		arma::mat B=S_c;
+		S_c=A+B;
 	//	S.print("this is initial S");
-		S.diag().fill(1);
+		S_c.diag().fill(1);
 	//	S.print(" this is S");
 	//	cout<<endl;
 	//loop to initialize the matrix elements of the Hamiltonian Marix
-		for(int row=0;row<6;row++)
+		for(int row=0;row<8;row++)
 		{
-			for(int col=0;col<6;col++)
+			for(int col=0;col<8;col++)
 			{
 				if(row!=col)
 				{
 				//	cout<<row<<" "<<col<<"  "<<endl;
-					Ham(row,col)=0.875*S(row,col)*(Ham(row,row)+Ham(col,col));
+					Ham_cote(row,col)=0.875*S_c(row,col)*(Ham_cote(row,row)+Ham_cote(col,col));
 				}
 			}
 		}
-		S.print("this is S");
+		Ham_cote.print("this is H");
 		cout<<endl;
-		Ham.print("this is H");
+		arma::cx_vec eee;
+		arma::cx_mat evv;
+		arma::eig_pair(eee,evv,Ham_cote,S_c);
+		arma::vec ee_real=arma::real(eee);
+		ee_real=arma::sort(ee_real);
+		ee_real;
 		cout<<endl;
-		arma::mat temp_H=Ham-S;
-		temp_H.print();
-		arma::cx_vec ee;
-		arma::cx_mat ev;
-		arma::eig_pair(ee,ev,Ham,S);
-		arma::vec e_real=arma::real(ee);
-		e_real=arma::sort(e_real);
-		e_real.print();
-		cout<<endl;
-		Elec(i)=2*e_real(0)+2*e_real(1)+2*e_real(2);
-		Elec_cat(i)=2*e_real(0)+e_real(1)*2+e_real(2);
-		S=arma::zeros(6,6);
+		Elec_cote(i)=2*ee_real(0)+2*ee_real(1)+2*ee_real(2)+2*ee_real(3);
+		S_c=arma::zeros(8,8);
 	}
-	Elec_cat.print("this is the Elec");
-	Enuc.print("this is the Enuc");
-	arma::vec Etot=Elec_cat+Enuc;
-	Etot.raw_print();
-//
+	Elec_cote.print("this is the Elec");
+	Enuc_cote.print("this is the Enuc");
+	arma::vec Etot_cote=Elec_cote+Enuc_cote;
+	Etot_cote.raw_print();
 
 
 }	
