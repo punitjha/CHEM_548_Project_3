@@ -570,6 +570,184 @@ int main()
 	arma::vec Etot=Elec_cat+Enuc;
 	Etot.raw_print();
 
+//*******************************************************************************************************
+//
+//
+//
+//********************************************************************************************************
+	
+	
+	
+	arma::mat a_cote(w_len,2);
+	arma::mat b_cote(w_len,2);
+	arma::mat x_cote(w_len,2);
+	for(int i=0; i<w_len; i++)
+	{
+		int col=0;
+		double a_ang=(1/4.0)*pi;
+		double x1_len=0.0;
+		double x2_len=0.0;
+		while(a_ang>(1.0/6.0)*pi)
+		{
+			double b_ang=(1.0/2.0)*pi-a_ang;
+			x1_len=sqrt(((R-w(i))*(R-w(i)))/(2-2*cos(a_ang)));
+			x2_len=sqrt(((R+w(i))*(R+w(i)))/(2-2*cos(b_ang)));
+	//		cout<<b_ang<<" "<<a_ang<<" "<<x1_len<<" "<<x2_len<<endl;
+			if(abs(x1_len-x2_len) < 0.0001 )
+			{
+				//cout<<"this is col"<<col<<endl;
+				//cout<<a_ang<<b_ang<<x1_len<<endl;
+				if (col == 0)
+				{
+					a_cote(i,col)=a_ang;
+					b_cote(i,col)=b_ang;
+					x_cote(i,col)=x1_len;
+					col++;
+
+				}
+				else
+				{
+					if (abs((x_cote(i,col-1))-(x1_len))<0.00001 )
+					{
+					//	cout<<x_val(i,col-1)<<" "<<x1_len<<" "<<abs((x_val(i,col-1))-(x1_len))<<endl;
+						a_cote(i,col)=a_ang;
+						b_cote(i,col)=b_ang;
+						x_cote(i,col)=x1_len;
+						col++;
+					}
+				}
+			}
+			a_ang=a_ang-0.00001;
+		}
+	}
+//	a_val.print("this is a");
+//	b_val.print("this is b"); 
+//	x_val.print("this is x");
+//	arma::mat c_cote=(pi-a_cote)/2;
+//	arma::mat d_cote=(pi-b_cote)/2;
+//	c_ang.print("this is c");
+	arma::vec c_r12=R-w;
+	arma::vec c_r23=R+w;
+	arma::vec c_r13=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+	       	c_r13(i)=sqrt(2)*x_cote(i);
+	}
+//	r13.print("this is r13");
+	arma::vec c_r14=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		c_r14(i)=sqrt(2*x_cote(i)*x_cote(i)-2*x_cote(i)*x_cote(i)*cos(2*a_cote(i)+b_cote(i)));
+	}
+	arma::vec c_r25=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		c_r25(i)=sqrt(2*x_cote(i)*x_cote(i)-2*x_cote(i)*x_cote(i)*cos(a_cote(i)+2*b_cote(i)));
+	}
+	arma::vec c_r15= arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		c_r15(i)=2*x_cote(i);
+	}
+
+//	r14.print("this is r14");
+	//setting the values of non-unique interaction distances according to symmetry
+	arma::vec c_r34=c_r12;
+	arma::vec c_r56=c_r12;
+	arma::vec c_r78=c_r12;
+	arma::vec c_r45=c_r23;
+	arma::vec c_r67=c_r23;
+	arma::vec c_r18=c_r23;
+	arma::vec c_r24=c_r13;
+	arma::vec c_r35=c_r13;
+	arma::vec c_r46=c_r13;
+	arma::vec c_r57=c_r13;
+	arma::vec c_r68=c_r13;
+	arma::vec c_r17=c_r13;
+	arma::vec c_r28=c_r13;
+	arma::vec c_r36=c_r14;
+	arma::vec c_r58=c_r14;
+	arma::vec c_r27=c_r14;
+	arma::vec c_r47=c_r25;
+	arma::vec c_r16=c_r25;
+	arma::vec c_r38=c_r25;
+	arma::vec c_r26=c_r15;
+	arma::vec c_r37=c_r15;
+	arma::vec c_r48=c_r15;
+
+	arma::mat S=arma::zeros(8,8);
+	arma::mat Ham=arma::zeros(8,8);
+	Ham.diag().fill(-10.77/27.212);
+	arma::vec Elec=arma::zeros(w_len);
+	arma::vec Elec_cat=arma::zeros(w_len);
+	arma::vec Enuc=arma::zeros(w_len);
+	for(int i=0;i<w_len;i++)
+	{
+		Enuc(i)=Z_eff*Z_eff/r12(i)+Z_eff*Z_eff/r13(i)+Z_eff*Z_eff/r14(i)+Z_eff*Z_eff/r15(i)+
+			Z_eff*Z_eff/r16(i)+Z_eff*Z_eff/r23(i)+Z_eff*Z_eff/r24(i)+Z_eff*Z_eff/r25(i)+
+			Z_eff*Z_eff/r26(i)+Z_eff*Z_eff/r34(i)+Z_eff*Z_eff/r35(i)+Z_eff*Z_eff/r36(i)+
+			Z_eff*Z_eff/r45(i)+Z_eff*Z_eff/r46(i)+Z_eff*Z_eff/r56(i);
+	}
+	Ham.print();
+	for(int i=0; i<w_len;i++)
+	{
+		S(0,2)=(1+Z*r13(i)+(2*Z*Z*r13(i)*r13(i))/5+(Z*Z*Z*r13(i)*r13(i)*r13(i))/15)*exp(-Z*r13(i));
+		S(0,3)=(1+Z*r14(i)+(2*Z*Z*r14(i)*r14(i))/5+(Z*Z*Z*r14(i)*r14(i)*r14(i))/15)*exp(-Z*r14(i));
+		S(0,4)=(1+Z*r15(i)+(2*Z*Z*r15(i)*r15(i))/5+(Z*Z*Z*r15(i)*r15(i)*r15(i))/15)*exp(-Z*r15(i));
+		S(1,3)=(1+Z*r24(i)+(2*Z*Z*r24(i)*r24(i))/5+(Z*Z*Z*r24(i)*r24(i)*r24(i))/15)*exp(-Z*r24(i));
+		S(1,4)=(1+Z*r25(i)+(2*Z*Z*r25(i)*r25(i))/5+(Z*Z*Z*r25(i)*r25(i)*r25(i))/15)*exp(-Z*r25(i));
+		S(1,5)=(1+Z*r26(i)+(2*Z*Z*r26(i)*r26(i))/5+(Z*Z*Z*r26(i)*r26(i)*r26(i))/15)*exp(-Z*r26(i));
+		S(2,4)=(1+Z*r35(i)+(2*Z*Z*r35(i)*r35(i))/5+(Z*Z*Z*r35(i)*r35(i)*r35(i))/15)*exp(-Z*r35(i));
+		S(2,5)=(1+Z*r36(i)+(2*Z*Z*r36(i)*r36(i))/5+(Z*Z*Z*r36(i)*r36(i)*r36(i))/15)*exp(-Z*r36(i));
+		S(3,5)=(1+Z*r46(i)+(2*Z*Z*r46(i)*r46(i))/5+(Z*Z*Z*r46(i)*r46(i)*r46(i))/15)*exp(-Z*r46(i));
+	//setting the S matrix for the bonded atoms
+		S(0,1)=(1+Z*r12(i)+(2*Z*Z*r12(i)*r12(i))/5+(Z*Z*Z*r12(i)*r12(i)*r12(i))/15)*exp(-Z*r12(i));
+		S(2,3)=S(0,1);
+		S(4,5)=S(0,1);
+		S(1,2)=(1+Z*r23(i)+(2*Z*Z*r23(i)*r23(i))/5+(Z*Z*Z*r23(i)*r23(i)*r23(i))/15)*exp(-Z*r23(i));
+		S(3,4)=S(1,2);
+		S(0,5)=S(1,2);
+		arma::mat A=S.t();
+		arma::mat B=S;
+		S=A+B;
+	//	S.print("this is initial S");
+		S.diag().fill(1);
+	//	S.print(" this is S");
+	//	cout<<endl;
+	//loop to initialize the matrix elements of the Hamiltonian Marix
+		for(int row=0;row<6;row++)
+		{
+			for(int col=0;col<6;col++)
+			{
+				if(row!=col)
+				{
+				//	cout<<row<<" "<<col<<"  "<<endl;
+					Ham(row,col)=0.875*S(row,col)*(Ham(row,row)+Ham(col,col));
+				}
+			}
+		}
+		S.print("this is S");
+		cout<<endl;
+		Ham.print("this is H");
+		cout<<endl;
+		arma::mat temp_H=Ham-S;
+		temp_H.print();
+		arma::cx_vec ee;
+		arma::cx_mat ev;
+		arma::eig_pair(ee,ev,Ham,S);
+		arma::vec e_real=arma::real(ee);
+		e_real=arma::sort(e_real);
+		e_real.print();
+		cout<<endl;
+		Elec(i)=2*e_real(0)+2*e_real(1)+2*e_real(2);
+		Elec_cat(i)=2*e_real(0)+e_real(1)*2+e_real(2);
+		S=arma::zeros(6,6);
+	}
+	Elec_cat.print("this is the Elec");
+	Enuc.print("this is the Enuc");
+	arma::vec Etot=Elec_cat+Enuc;
+	Etot.raw_print();
+//
 
 
 }	
