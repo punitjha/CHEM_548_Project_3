@@ -38,14 +38,14 @@ int main()
 	arma::vec k2=arma::linspace(-pi, pi, 100);		//wavefactor k2
 	complex <double> I(0.0,1.0);				//complex no. I  
 	arma::mat connect;
-	ifstream myfile("benzene"); 				//molcule connectivity file name
+	ifstream myfile("hexacene"); 				//molcule connectivity file name
 	if (myfile.is_open())
 	{
 		string str1; 					//gets the first lin
 		getline(myfile,str1);				
 		istringstream ee(str1);				//istring - extract words from the line
 		ee >> atoms; 					//no. of atoms is assigned here
-		connect=arma::zeros(atoms,3);			//connectivity matrix-- has 3 max
+		connect=arma::zeros(atoms,4);			//connectivity matrix-- has 3 max
 		string str;					//str for use in getline below
 		int row=0;
 		while(getline(myfile,str))
@@ -61,6 +61,7 @@ int main()
 			row++;
 		}
 	}
+	connect.print();
 	myfile.close();
 	arma::mat Huckel= arma::zeros(atoms,atoms);	 	//Huckel matrix for TPA as semiconductor
 	arma::mat Huckel2= arma::zeros(atoms,atoms); 		//H matrix  in electron-volts.
@@ -69,19 +70,29 @@ int main()
 		int n1=connect(i,0)-1;				//extracting the elements 
 		int n2=connect(i,1)-1;
 		int n3=connect(i,2)-1; 				//n3=0 for linear hydro-carbons
+		int n4=connect(i,3)-1;
 		Huckel(n1,n2)=-1;
 		Huckel(n2,n1)=-1;
-		Huckel2(n1,n2)=2.94;
-		Huckel2(n2,n1)=2.94; 
+		Huckel2(n1,n2)=-2.94;
+		Huckel2(n2,n1)=-2.94; 
 		if (n3 > 0) 					//if hydorcarbon has rings
 		{
 			Huckel(n1,n3)=-1;
 			Huckel(n3,n1)=-1;
-			Huckel2(n1,n3)=2.94;
-			Huckel2(n1,n3)=2.94;
+			Huckel2(n1,n3)=-2.94;
+			Huckel2(n1,n3)=-2.94;
 		}
+		if (n4 > 0) 					//if hydorcarbon has rings
+		{
+			Huckel(n1,n4)=-1;
+			Huckel(n4,n1)=-1;
+			Huckel2(n1,n4)=-2.94;
+			Huckel2(n1,n4)=-2.94;
+		}
+
 	}	
-	Huckel2.diag().fill(5.94);				//diagonal elements = 5.94eV 
+	Huckel.print("this is Huckel");
+	Huckel2.diag().fill(-5.94);				//diagonal elements = 5.94eV 
 	arma::vec eigenvalues;
 	arma::mat eigenvectors;
 	arma::eig_sym(eigenvalues, eigenvectors, Huckel); 	//eigenvalues and the eigenvectors matrix
@@ -711,8 +722,6 @@ int main()
 				}
 			}
 		}
-		Ham_cote.print("this is H");
-		cout<<endl;
 		arma::cx_vec eee;
 		arma::cx_mat evv;
 		arma::eig_pair(eee,evv,Ham_cote,S_c);
@@ -727,7 +736,6 @@ int main()
 	{
 		cote_tot<<w(i)<<" "<<Elec_cote(i)<<" "<<Enuc_cote(i)<<" "<<Etot_cote(i)<<endl;
 	}
-	Etot_cote.raw_print();
 
 
 }	
