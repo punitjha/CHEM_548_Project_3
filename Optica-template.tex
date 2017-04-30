@@ -66,8 +66,10 @@ A common way to represent the electronic structure of $trans$-polyacetylene is b
 Conjugated molecules, often tend to be planar and hence all the atoms in the molecules can be assumed to lie in the same plane, say the x-y plane. Which means that the molecule will have a reflection symmetry about the z-axis. So we have reflection symmetry about x and y and this gives rise to $\pi_y$ orbitals that are anti-symmetric with respect to reflection and the $\sigma$ orbitals that are symmetric to reflection about the y axis. These $\pi_y$ orbitals will be an linear combination of the $p_y$
 orbitals on each of the carbon atoms. 
 
-In general, since the $\pi$ orbitals are the highest occupied orbitals and the $\sigma$ bonds are more strongly bonded -- it makes sense to talk only the $\pi$ bond when talking about bond formation and breaking as implied by the resonance structures shown in Figure \ref{fig:trans-poly2}.  This is a basic approximation of the very simple H$\ddot{\text u}$ckel approach. As always we start with the time-dependent Schrödinger equation,
+In general, since the $\pi$ orbitals are the highest occupied orbitals and the $\sigma$ bonds are more strongly bonded -- it makes sense to talk only the $\pi$ bond when talking about bond formation and breaking as implied by the resonance structures shown in Figure \ref{fig:trans-poly2}.  This is a basic approximation of the very simple H$\ddot{\text u}$ckel approach.
 
+\subsection{Huckel Theory}
+As always we start with the time-dependent Schrödinger equation,
 \begin{align}
  \hat{H}\Psi = E\Psi
  \label{eq:sc}
@@ -183,7 +185,7 @@ The eigenvectors corresponding to these energy states can be obtained and they a
 
 
 
-The energy calculated above presents an interesting result -- it predicts that benzene is more stable than a normal 3 double bond system. If we do  H$\ddot{\text u}$ckel theory calculation for etylene molecule we find that as single etylene molecule we find that a single ethylene molecule has an energy of:
+The energy calculated above presents an interesting result -- it predicts that benzene is more stable than a normal 3 double bond system. If we do  H$\ddot{\text u}$ckel theory calculation for etylene molecule we find that as single ethylene molecule we find that a single ethylene molecule has an energy of:
 \begin{align}
 E_{C=C}=2\alpha+2\beta
  \label{eq:ethy}
@@ -218,18 +220,515 @@ O_{12}=& 2 c_1^{\mu=1} c_2^{\mu=1}+2 c_1^{\mu=2} c_2^{\mu=2}+2 c_1^{\mu=3} c_2^{
 \label{eq:bond21}
  \end{align}
  
-\begin{align*}
+\begin{align}
 & = 2 \left( \frac{+1}{\sqrt{6}} \right) \left( \frac{+1}{\sqrt{6}} \right)+
 2 \left( \frac{+1}{\sqrt{12}} \right) \left( \frac{+1}{\sqrt{12}} \right)+ \\
 & 2 \left( \frac{+1}{\sqrt{4}} \right) \left( \frac{0}{\sqrt{4}} \right)\\
-& = 2\frac{1}{6}+2\frac{2}{12}\\
+& = 2 \times \frac{1}{6}+2 \times \frac{2}{12}\\
 & =\frac{2}{3}
  \label{eq:bondz}
- \end{align*} 
+ \end{align} 
 
 Thus, the $C_1$ and $C_2$ of the benzene share $\frac{2}{3}$ of a $\pi$ bond. Repeating the procedure for each of the $C-C$ atoms we find the same bond order for all of them (taking note of the fact that we have omitted the $\sigma$ orbital contributions). This is again an interesting results, since for a double bond we have a bond order of $\frac{1}{2}$ for each   bond \ce{C\bond{-} C}  $\pi$-bond rather than $\frac{2}{3}$. The additional $\frac{1}{6}$ of a bond per carbon comes directly from the aromatic stabilization -- as the molecule is more stable than a three isolated $\pi$ bonds by $2\beta$. This higher bond order results in a shorter \ce{C\bond{-} C} bond length in benzene as compared to non-aromatic conjugated systems.
 
-This procedure was computationally implemented in the  C++ programming language for benzene, anthracene,  hexacene,  1. 2-benzopentacene, anthanthrene and  peropyrene. The input connectivity files for these molecules are attached with the email and the resulting orbital energies assuming $\alpha= $, $\beta= $ and $\alpha= $, $\beta= $ are also shown below.
+
+
+
+This procedure was computationally implemented in the  C++ programming language for benzene, anthracene,  hexacene, and  peropyrene. The input connectivity files for these molecules are attached with the email and the resulting orbital energies assuming $\alpha=0 $, $\beta=-1 $ and $\alpha=5.94 \,\, eV $, $\beta=2.94 \,\, eV $ are also shown in Table \ref{tab:huck1} and \ref{tab:huck2} .
+
+
+
+\begin{table}[H]
+\centering
+\caption{\bf  $\pi$ Orbital Energies }
+\begin{tabular}{ccc}
+\hline
+Molecule &$\alpha=0 $, $\beta=-1 $  & $\alpha=-5.94 \,\, eV $, $\beta=-2.94 \,\, eV $ \\
+\hline
+Benzene & $-2.0000 $ & $ 0.0600$\\ 
+&   $-1.0000$        & $3.0000$\\
+&   $-1.0000$        & $3.0000$\\
+&   $+1.0000$        & $8.8800$\\
+&   $+1.0000$        & $8.8800$\\
+&   $+2.0000$        & $11.820$\\
+Anthracene 	&   $-2.4142 $ 	      & $-1.1578 $\\ 
+		&   $-2.0000 $        & $ 0.0600 $\\
+		&   $-1.4142 $        & $ 1.7822 $\\
+		&   $-1.4142 $        & $ 1.7822 $\\
+		&   $-1.0000 $        & $ 3.0000 $\\
+		&   $-1.0000 $        & $ 3.0000 $\\
+		&   $-0.4142 $        & $ 4.7222 $\\ 
+		&   $+0.4142 $        & $ 7.1578 $\\
+		&   $+1.0000 $        & $ 8.8800 $\\
+		&   $+1.0000 $        & $ 8.8800 $\\
+		&   $+1.4142 $        & $10.0978 $\\
+		&   $+1.4142 $        & $10.0978 $\\
+		&   $+2.0000 $ 	      & $11.8200 $\\ 
+		&   $+2.4142 $        & $13.0378 $\\
+Hexacene	&   $-2.5074 $        & $-1.4316 $\\
+		&   $-2.3489 $        & $-0.9658 $\\
+		&   $-2.0994 $        & $-0.2322 $\\ 
+		&   $-1.7866 $        & $ 0.6873 $\\
+		&   $-1.5349 $        & $ 1.4274 $\\
+		&   $-1.4701 $        & $ 1.6179 $\\
+		&   $-1.3519 $        & $ 1.9653 $\\
+		&   $-1.2392 $        & $ 2.2967 $\\
+		&   $-1.0591 $        & $ 2.8261 $\\
+		&   $-1.0000 $        & $ 3.0000 $\\
+		&   $-0.6913 $        & $ 3.9075 $\\ 
+		&   $-0.3372 $        & $ 4.9485 $\\
+		&   $-0.0485 $        & $ 5.7974 $\\
+		&   $ 0.0485 $        & $ 6.0826 $\\
+		&   $ 0.3372 $        & $ 6.9315 $\\
+		&   $ 0.6913 $        & $ 7.9725 $\\
+		&   $ 1.0000 $        & $ 8.8800 $\\
+		&   $ 1.0591 $        & $ 9.0539 $\\
+		&   $ 1.2392 $        & $ 9.5833 $\\ 
+		&   $ 1.3519 $        & $ 9.9147 $\\
+		&   $ 1.4701 $        & $10.2621 $\\
+		\hline
+\end{tabular}
+  \label{tab:huck1}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{\bf  $\pi$ Orbital Energies }
+\begin{tabular}{ccc}
+\hline
+Molecule &$\alpha=0 $, $\beta=-1 $  & $\alpha=-5.94 \,\, eV $, $\beta=-2.94 \,\, eV $ \\
+\hline
+Hexacene	&   $ 1.5349 $        & $10.4526 $\\	
+		&   $ 1.7866 $        & $11.1927 $\\
+		&   $ 2.0994 $        & $12.1122 $\\
+		&   $ 2.3489 $        & $12.8458 $\\
+		&   $ 2.5074 $        & $13.3116 $\\
+Peropyrene 	&   $-2.6431 $        & $-1.7227 $\\
+		&   $-2.3876 $        & $-0.7492 $\\
+		&   $-2.0000 $        & $ 0.1978 $\\
+		&   $-1.9190 $        & $ 0.3482 $\\
+		&   $-1.6825 $        & $ 0.8478 $\\ 
+		&   $-1.5435 $        & $ 1.3590 $\\
+		&   $-1.3097 $        & $ 1.9114 $\\
+		&   $-1.1159 $        & $ 2.7540 $\\
+		&   $-1.0000 $        & $ 3.0000 $\\
+		&   $-1.0000 $        & $ 3.0000 $\\
+		&   $-0.8308 $ 	      & $ 3.4653 $\\ 
+		&   $-0.8280 $        & $ 4.2493 $\\
+		&   $-0.2846 $        & $ 5.1144 $\\
+		&   $ 0.2846 $        & $ 6.7656 $\\
+		&   $ 0.8280 $        & $ 7.6307 $\\
+		&   $ 0.8308 $        & $ 8.4147 $\\
+		&   $ 1.0000 $        & $ 8.8800 $\\ 
+		&   $ 1.0000 $        & $ 8.8800 $\\
+		&   $ 1.1159 $        & $ 9.1260 $\\
+		&   $ 1.3097 $        & $ 9.9686 $\\
+		&   $ 1.5435 $        & $10.5210 $\\
+		&   $ 1.6825 $        & $11.0322 $\\
+		&   $ 1.9190 $ 	      & $11.5318 $\\ 
+		&   $ 2.0000 $        & $11.6822 $\\
+		&   $ 2.3876 $        & $12.6292 $\\
+		&   $ 2.6431 $        & $13.6027 $\\		
+\hline
+\end{tabular}
+  \label{tab:huck2}
+\end{table}
+
+
+\subsection{Free-Electron Model }
+
+\subsection{$k$-space}
+
+\subsection{Born-von Karmen boundary Condition }
+
+\subsection{Brillouin Zone}
+
+\subsubsection{Brillouin Zone in 2-dimensions}
+
+
+\subsubsection{Fermi Level}
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_1}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_2}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_5}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_1-2}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_1-1}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+
+
+
+\subsection{The Su-Schrieffer-Heeger (SSH) model}
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Jahn-Teller Theorem}
+The Jahn-Teller theorem states that for any non-linear molecular system in a degenerate electronic state will be unstable and will undergo distortion to form a system of lower symmetry and lower energy thereby removing the degeneracy. The Jahn-Teller Effect, governed by the Jahn-Teller Theorem, is a phenomenon in which non-linear molecules are stabilized via symmetric geometric distortions along one of their vibrational axes.The theorem does not predict what type of distortion but says  that this distortion will lower the complex's symmetry, energy, and degeneracy.
+The phenomenon exclusively affects systems with electronic degeneracy, and it primarily affects systems with an odd number of electrons. The Jahn-Teller 
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{Jahn}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_6}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\subsection{Deriving the origins of Jahn-Teller distortion from enhanced Huckel Theory (HT)}
+Equations \ref{eq:sc}-\ref{eq:pHij} represent a standard protocol for carrying out the H$\ddot{u}$ckel calculations and assuming a particular value of the resonance integral  $\beta$ and  energy integral $\alpha$ from experiments render it a semi-empirical flavor. Its not particularly useful for predicting the molecular geometric structure and it is therefore not reliable in predicting  the molecular potential energy curve. We now aim to extend the H$\ddot{u}$ckel theory (HT) and enhance it such that it can predict the molecular potential energy curve and hence, show the origin of the Jahn-Teller distortion in 1,3,5,7-cyclooctatetraene (COTE). This procedure has been described in detail by Sohlberg \emph{et. al} \cite{wiki1}  COTE spontaneously distorts into from a perfect octagon whereas benzene will not distort from a perfect hexagon. The required enhancement is accomplished through the application of Pauli and Aufbau's Principle together with the Hund's rule and the use of Slater's rule for determining the nuclear screening by core electrons. 
+
+To get a molecular potential energy curve we must have the sum of electronic total energy and the nuclear-nuclear repulsion energy. First we produce a total many-electron energy, instead of simply a set of one-electron orbital energies. Secondly, the nuclear-nuclear energy is accounted for. 
+
+Using the Pauli and Aufbau principles together with Hund’s rule we assume that each of the $n$ molecular orbitals has an occupancy of 2, 1, or 0 electrons and accordingly the total electronic energy is given by:
+
+\begin{align}
+E_e^k=\sum_{i=1...n} p_{i}^k E_i
+\label{eq:EE}
+\end{align}
+
+where $E_e^k $ is the many-electron energy of the $k$th electronic state, $E_i$ is the energy of the $i$th molecular orbital and $p_i^k $ is the
+occupancy of the $i$th molecular orbital in the $k$th state. This approximation implicitly assumes that the many-electron wave function is a product of one-electron wave functions and that it does not satisfy the antisymmetry property--a hartree product.
+
+The HT does not is a valence-electron only theory and does not treat the core-electrons. Using the Slater rules we approximate the numerical values for the effective nuclear charge experienced by each electron in a many-electron atom. The
+effective charge $Z^{eff}$ is given by,
+\begin{align}
+Z^{eff}=Z-s
+\label{eq:EE1}
+\end{align}
+where Z is the true nuclear charge and $s$ is the total shielding. The shielding constants are calculated by grouping electrons by principal quantum number $n$ and azimuthal quantum number $l$. The shielding constant $s$ for each group is
+given by the sum of following contributions:
+\begin{itemize}
+\item 0.35 for each other electron with the same $n$ and $l$; 
+\item 0.85 for each other electron with the same $n$ but smaller $l$ and,
+\item 1 for each other electron with smaller $n$.
+\end{itemize}
+The analogue of nuclear repulsion energy for the HT, the "atomic core repulsion energy " is given as :
+\begin{align}
+V_{nn}= \sum_{\alpha > \beta} \frac{Z^{eff}_\alpha Z^{eff}_\beta}{R_{\alpha \beta}}
+\label{eq:EE2}
+\end{align}
+ where the Greek letter subscripts run over all atoms in the
+molecule. The potential energy surface for the $k$th electronic state $(E^{tot}_k )$
+of the molecule is then given by:
+\begin{align}
+E^{tot}_k = E^{k}_e + V_{nn}
+\label{eq:EE3}
+\end{align}
+We note that both $E_e^k$ and $V_{nn}$ depend on the relative spatial
+position of the constituent atoms in the molecule, that is, the molecule’s geometry, so that $E^{tot}_k$ represents an electronic state energy. To apply this procedure to COTE and benzene we that they are perfect polygon to begin with (hexagon $D_{6h}\,\, symmetry$  in the case of benzene and octagon $D_{8h} \,\, symmetry$ in the case of COTE) that lies in the $xy$ plane . Each bond is taken to be of length $R$ = $2.63$ $b$. ( 2.63 b = $1.39 $ \AA  = $ 1.39$ $ \times $ $10^{-10}$ m. 
+
+The distortion of COTE from a perfect octagon, which has  $D_{8h}\,\, symmetry$, to the lower symmetry  $D_{4h}\,\, symmetry$  structure, which represents alternating single and double bonds along the backbone of the octagon can be represented in terms of the distortion parameter $w$ with the units of length -$bohr $. With the increase in $w$ the bonded atoms alternatively have separation $R-w$ and $R+w$. Our goal is to determine the functional dependence of the ground-state energy on $w$.
+
+We select the basis set consisting $2p_z$ orbitals (since only the $\pi$ bonding structure of the molecule is treated in HT ) for calculation of the \textbf{H} and\textbf{ S} matrix elements.  The overlap between tow parallel $p_z$ orbitals to form $\pi$ structure id given as :
+\begin{align}
+s_{(2p\pi - 2p\pi)} =\left( 1+\zeta R + \frac{2 \zeta^2 R^2}{5} +\frac{\zeta^3 R^3}{15}\right)  exp\left( -\zeta R \right)
+\label{eq:EE4}
+\end{align}
+Here, $\zeta$ is the orbital exponent which is taken to be 1.5679 for a carbon $2p_z$ orbital and $R$ is the separation between the two orbital centers.   To be able to use the Equation \ref{eq:EE4} to compute all the elements of the \textbf{S} matrix, all the atom-atom distances must be calculated. 
+
+To analyze the dependence of the ground-state energy on the distortion parameter $w$, these atomic distances must be calculated
+as a function of $w$. Using, the geometric definitions as shown in Figure  \ref{fig:cote} and \ref{fig:benzene}. The quantities $a$, $b$, and $x$ are caluculated  using the law of cosines:
+\begin{align}
+(R-w)^2=2x^2-2x^2cos(a)
+\label{eq:cosine}
+\end{align}
+
+\begin{align}
+(R+w)^2=2x^2-2x^2cos(b)
+\label{eq:cosine1}
+\end{align}
+
+
+and using the fact that the sum of all angle around the center point of the octagon must be $360^o$
+\begin{align}
+4a+4b=2\pi \Rightarrow a+b =\frac{\pi}{2}
+\label{eq:cosine2}
+\end{align}
+
+The three Equations \ref{eq:cosine}, \ref{eq:cosine1} and  \ref{eq:cosine2} above are solved simultaneously to to yield $a$,$ b$, and $x$. The physically meaningful
+positive roots are selected. Adjacent (bonded) atoms have separation,
+
+\begin{align}
+r_{12}=r_{34}=r_{56}=r_{78}=R-w
+\label{eq:r1}
+\end{align}
+
+\begin{align}
+r_{23}=r_{45}=r_{67}=r_{18}=R+w
+\label{eq:r2}
+\end{align}
+
+The second-nearest neighbor separation is determined
+using the law of cosines as,
+
+\begin{align}
+r_{13}=r_{24}=...=\sqrt{2x^2-2x^2cos(\pi/2)}.x=\sqrt{2}.x
+\label{eq:r3}
+\end{align}
+There are two types of third-nearest neighbor interactions.
+The law of cosines is used in the definition of both.
+
+\begin{align}
+r_{14}=r_{36}=...=\sqrt{2x^2-2x^2cos(2a+b)}
+\label{eq:r4}
+\end{align}
+
+\begin{align}
+r_{25}=r_{47}=...=\sqrt{2x^2-2x^2cos(a+2b)}
+\label{eq:r5}
+\end{align}
+
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{cote}}
+\caption{Diagrammatic representation of the distortion parameter $w$ and the structure of COTE. For $w$=0, COTE is a perfect octagon but as $w$ increases the structure develops alternating short and long bonds, which can be characterized by the variable $a$, $b$, $c$, $d$, and $x$. These can be then used to determine the overlap between orbitals as shown in Equation \ref{eq:EE4} }
+\label{fig:cote}
+\end{figure}
+
+The Equations \ref{eq:r1}, \ref{eq:r2}, \ref{eq:r3}, \ref{eq:r4} and  \ref{eq:r5} are used to determine all of the atomic distances in the COTE molecule. A slight modification of these equations as described in \cite{wiki1} can be used to determine the atomic distances as a function of distortion parameter $w$ for benzene as well. 
+
+We then use Equation \ref{eq:overlap} to determine the corresponding \textbf{S}-matrix elements, that is, the overlap integrals. To determine the \textbf{H} matrix we use the following approximation:
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{benzene}}
+\caption{Diagrammatic representation of the distortion parameter $w$ and the structure of benzene. For $w$=0, benzene is a perfect hexagon but as $w$ increases the structure develops alternating short and long bonds, which can be characterized by the variable $a$, $b$, $c$, $d$, and $x$. These can be then used to determine the overlap between orbitals as shown in Equation \ref{eq:EE4}}
+\label{fig:benzene}
+\end{figure}
+
+
+
+\begin{align}
+H_{ii}=-\textbf{VOIE}(\chi_i)
+\label{eq:HH1}
+\end{align}
+
+\begin{align}
+H_{ij}=0.875\times S_{ij} (H_{ii}+H_{jj})
+\label{eq:HH@}
+\end{align}
+
+where ``VOIE" denotes “valence orbital ionization energy”, that is, the ionization energy of an election in a $\chi_i$ orbital on an isolated atom of the corresponding element and is equal to  $3.396$ hartree $=$ $10.77$ eV for a carbon $2p$ electron. The off-diagonal elements of \textbf{H} is given by \ref{eq:HH@}.
+
+The above steps convert the Schrodinger equation in the secular form of the Equation \ref{eq:sc}. Solving these we get the molecular orbital energies according to HT. The computational algorithm used is discussed in Algorithm Table \ref{alg:euclid}. This was implemented in C++. \\\\\\\\\\\\\\\\\\\\\\\\
+
+
+\subsection{Steps for Calculations}
+A C++ code was developed to solve the above equations, the steps for which is given below.
+\begin{algorithm}
+\caption{Steps}\label{alg:euclid}
+\begin{algorithmic}[1]
+\State Set $R$, $\zeta$ and $Z^{eff}$.
+\State Set $w$ (the bond length variation )
+\State Equations \ref{eq:cosine}, \ref{eq:cosine1} and  \ref{eq:cosine2}  are are solved simultaneously for $a$, $b$, and $x$.
+\State All of the inter atomic distances are calculated with Equations \ref{eq:r1}, \ref{eq:r2}, \ref{eq:r3}, \ref{eq:r4}, and  \ref{eq:r5}.
+\State All of the S-matrix elements are calculated with Equation  \ref{eq:overlap}
+\State All of the diagonal H-matrix elements are set with Equation \ref{eq:HH1} and 
+\ref{eq:HH@}
+\State All of the off-diagonal H-matrix elements are calculated with Equation \ref{eq:sc}.
+\State Equation \ref{eq:sec} is solved for the molecular orbital energies and the lowest four roots selected.
+\State The total electronic energy is calculated with Equation \ref{eq:EE} by
+placing the 8 electrons in the four lowest energy orbitals ( 6 in case of benzene ).
+\State The core-core repulsion energy is calculated with Equation \ref{eq:EE2}.
+\State The ground-state energy is calculated with Equation \ref{eq:EE3}.
+\State Steps 2-11 are repeated to generate a set of points
+describing the variation in the ground-state energy as a
+function of the distortion parameter $w$.
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{The Jahn-Teller Effect in Action !}
+The procedure was implemented for COTE and benzene, the plot of those results are shown below.
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{MO_levels_cote}}
+\caption{Evolution of 8 COTE $\pi$ orbital energies with the distortion parameter $w$.The $\pi$-orbital structure of COTE has 8 electrons, so the degenerate level at $w$ = 0 is half-filled. Note that with increasing $w$  the HOMO which was earlier degenerate is now split. This shows that on distortion all the electrons fill up the lower energy orbitals and the net result is a net decrease in energy. This is the Jahn-Teller distortion. }
+\label{fig:MO_levels_cote}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{cote_both}}
+\caption{This figure shows how the electronic energy and the core-core repulsion energy varies as a function of the distortion parameter $w$ for COTE. Initially as  $w$ increases, the electronic energy decreases faster than the nuclear repulsion energy increases, so the ground-state energy decreases with increasing $w$, but at larger values of$ w$, the nuclear repulsion energy increases more rapidly and the
+ground-state energy begins to increase with increasing $w$. This
+competition between terms leads to a minimum at $w$ >0 and results in distortion of the bonds.  }
+\label{fig:cote_both}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{cote_total}}
+\caption{Evolution of total energy of COTE as a function of the distortion parameter $w$. The minimum of the energy occurs for $w$ >0. This predicts that COTE will undergo distortion from a perfect octagon to a structure with alternating short and long bonds, as is observed experimentally. This can be assumed to be the net resultant of the two curves in the Figure \ref{fig:cote_both} }
+\label{fig:cote_total}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{MO_levels_ben}}
+\caption{Evolution of 6 benzene $\pi$ orbital energies with the distortion parameter $w$. E2 and E3 are degenerate and so are E3 and E4. There is no splitting upon distortion and so benzene does not exhibit the Jahn-Teller distortion.}
+\label{fig:MO_levels_ben}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{ben_both}}
+\caption{This figure shows how the electronic energy and the core-core repulsion energy varies as a function of the distortion parameter $w$ for benzene. We observe that electronic energy decrease at a slightly lower rate than the core-core repulsion energy increases as a function of $w$. Thus, the ground state energy keeps on increasing and the minima is at $w$=0, and hence we observe no distortion as in the case of COTE.  }
+\label{fig:ben_both}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\fbox{\includegraphics[width=\linewidth]{ben_total}}
+\caption{Evolution of total energy of benzene as a function of $w$.This can be assumed to be the net resultant of the two curves in the Figure \ref{fig:ben_both}. This shows that the minimum of the energy is at $w$=0 and hence, Jahn-Teller distortion is not seen in case of benzene.  }
+\label{fig:ben_total}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{ Peierls Distortion }
+
+A major break through in the area of conducting plastics occurred when it was discovered that polyacetylene, which has an intrinsic conductivity much lower than $10^-5$ S/cm could be made highly conducting by exposing it to oxidizing (p-type doping  $I_2, Br_2, FeCl_3$) or reducing agents(n-type doping). The structure of ployacetylene is shown in Figure \ref{fig:trans-poly} it is a long chain of $CH$ groups, each possessing an unpaired electron, which can be looked at as a one-dimensional metal where each metal atom is replaced by an $CH$ radicals. Since there is only one unpaired electron per $CH$ group, a half-filled band is obtained so metallic conductivity is possible.
+
+ In reality, polyacetylene  is characterized by alternating succession of short (double) and long (single) bonds. This behavior results form the Peierel's instability. It states that if a system with a given symmetry has a top occupied electronic orbital that is degenerate, then this orbital will interact
+with a vibrational mode that has symmetry lower than that of the
+original system, causing it to distort from the original configuration
+and thus splitting the degeneracy, which results in the appearance
+of a state of lower energy. This principle is also known as the Jahn-Teller
+effect. This distortion causes the degeneracy at the edge of the Brillouin zone to disappear and thereby lowering the Fermi level. Since, there is an energy gap at the Fermi level, the material ceases to be a conductor and instead becomes an insulator.
+
+ This distortion results in the appearance of two minima on the potential energy surface characterizing polyacetylene. These two minima correspond to two alternative crystal lattices  which differ from each other by the way the short and long bonds alternate in the crystal lattice.
+
+
+
+
+
+
+
+\begin{figure}[htbp]
+\centering
+\fbox{\includegraphics[width=\linewidth]{figure_last}}
+\caption{The energy levels of $e_g$ and $t_{2g}$ orbitals of octahedral complexes, alongside their distorted energy levels. These distortions are caused by the Jahn-Teller Effect.}
+\label{fig:Jahn}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -266,16 +765,7 @@ It is not necessary to place figures and tables at the back of the manuscript. F
 
 Figures and Tables should be labelled and referenced in the standard way using the \verb|\label{}| and \verb|\ref{}| commands.
 
-\subsection{Sample Figure}
 
-Figure \ref{fig:false-color} shows an example figure.
-
-\begin{figure}[htbp]
-\centering
-\fbox{\includegraphics[width=\linewidth]{sample}}
-\caption{False-color image, where each pixel is assigned to one of seven reference spectra.}
-\label{fig:false-color}
-\end{figure}
 
 \subsection{Sample Table}
 
@@ -310,24 +800,7 @@ S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
 \end{equation}
 denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
 
-\section{Sample Algorithm}
 
-Algorithms can be included using the commands as shown in algorithm \ref{alg:euclid}.
-
-\begin{algorithm}
-\caption{Euclid’s algorithm}\label{alg:euclid}
-\begin{algorithmic}[1]
-\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
-\State $r\gets a\bmod b$
-\While{$r\not=0$}\Comment{We have the answer if r is 0}
-\State $a\gets b$
-\State $b\gets r$
-\State $r\gets a\bmod b$
-\EndWhile\label{euclidendwhile}
-\State \textbf{return} $b$\Comment{The gcd is b}
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
 
 \section{Results}
 
